@@ -2,10 +2,23 @@ import Header from "./components/Header";
 import JournalEntry from "./components/JournalEntry";
 import "./App.css";
 import EntryForm from "./components/EntryForm";
-import { useState , useEffect } from "react";
+import { useEffect, useReducer } from "react";
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "ADD_ENTRY":
+            return [...state, action.payload];
+        case "DELETE_ENTRY":
+            return state.filter(entry => entry.id !== action.payload)
+
+
+        default:
+            return state;
+    }
+};
 
 const App = () => {
-    const [entries, setEntries] = useState([
+    const [entries, dispatch] = useReducer(reducer, [
         {
             id: 1,
             title: "First Entry",
@@ -21,17 +34,18 @@ const App = () => {
     ]);
 
     const addEntry = (newEntry) => {
-        setEntries((prev) => [...prev, newEntry]);
+        dispatch({
+            type: "ADD_ENTRY",
+            payload: newEntry,
+        });
     };
 
     useEffect(() => {
-        document.title = `My Journal (${entries.length} entries)`
-        }, [entries])
-
+        document.title = `My Journal (${entries.length} entries)`;
+    }, [entries]);
 
     return (
         <div className="app">
-            
             <Header />
             <EntryForm onAddEntry={addEntry} />
 
