@@ -1,8 +1,8 @@
-const Header = () => {
+function Header() {
   return (
     <header className="header">
-      <h1>My Journal</h1>
-      <p>A place for your thoughts</p>
+      <h1>Your Journal</h1>
+      <p>A space for your thoughts</p>
     </header>
   )
 }

@@ -6,10 +6,9 @@ const App = () => {
   return (
     <div className="app">
       <Header />
-      <main className="entries">
-        <JournalEntry />
-        <JournalEntry />
-      </main>
+      <JournalEntry title="First Journal Entry" date="10 June" body="I started React"/>
+      <JournalEntry title="Second Journal Entry" date="11 June" body="I had an icecream"/>
+      
     </div>
   )
 }

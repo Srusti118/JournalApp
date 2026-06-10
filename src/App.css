@@ -1,47 +1,45 @@
 .app {
-  max-width: 680px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 40px 16px;
 }
 
 .header {
   margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .header h1 {
-  font-size: 2rem;
   margin: 0 0 4px;
+  font-size: 1.8rem;
 }
 
 .header p {
-  color: #888;
   margin: 0;
-}
-
-.entries {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  color: #888;
+  font-size: 0.95rem;
 }
 
 .entry-card {
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 16px 20px;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
 }
 
 .entry-date {
   font-size: 0.8rem;
-  color: #999;
+  color: #aaa;
 }
 
 .entry-title {
-  margin: 6px 0 8px;
+  margin: 6px 0 10px;
   font-size: 1.2rem;
 }
 
 .entry-body {
-  color: #444;
-  line-height: 1.6;
   margin: 0;
+  color: #555;
+  line-height: 1.6;
 }

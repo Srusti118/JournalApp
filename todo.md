@@ -14,8 +14,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 ## 2. React Fundamentals
 - ✅ JSX
 - ✅ Components
-- ⬜ Props
-- ⬜ State
+- ✅ Props
+- ✅ State
 - ⬜ Event Handling
 - ⬜ Conditional Rendering
 - ⬜ Rendering Lists
