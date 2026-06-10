@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState , useRef , useEffect } from "react";
 
 function EntryForm({ onAddEntry }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
+    const titleRef = useRef(null);
+
+    useEffect(()=> {
+        titleRef.current.focus()
+    } , []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,6 +24,7 @@ function EntryForm({ onAddEntry }) {
         <form className="entry-form" onSubmit={handleSubmit}>
             <input
                 className="form-input"
+                ref = {titleRef}
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}

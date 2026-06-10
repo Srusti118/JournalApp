@@ -26,7 +26,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 ## 3. React Hooks
 - ✅ useState
 - ✅ useEffect
-- ⬜ useRef
+- ✅ useRef
 - ⬜ useReducer
 - ⬜ useContext
 - ⬜ Custom Hooks (usePosts done, needs more practice)
