@@ -4,8 +4,9 @@ function JournalEntry({title,date,body}) {
 
   const[count , setCount] = useState(0);
 
-  const handlelike = () => {
-    setCount(prev => prev+1)
+  const handleLike = () => {
+    setCount(prev => prev+1);
+    
   }
   
   return (
@@ -13,7 +14,8 @@ function JournalEntry({title,date,body}) {
       <span className="entry-date">{date}</span>
       <h2 className="entry-title">{title}</h2>
       <p className="entry-body">{body}</p>
-      <button onClick={handlelike}> ❤️ {count} </button>
+      <button onClick={handleLike}> ❤️ {count} </button>
+      {count>0 && <p>Liked!</p>}
     </div>
   )
 
