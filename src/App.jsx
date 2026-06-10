@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import JournalEntry from "./components/JournalEntry";
 import "./App.css";
 import EntryForm from "./components/EntryForm";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 
 const App = () => {
     const [entries, setEntries] = useState([
@@ -24,8 +24,14 @@ const App = () => {
         setEntries((prev) => [...prev, newEntry]);
     };
 
+    useEffect(() => {
+        document.title = `My Journal (${entries.length} entries)`
+        }, [entries])
+
+
     return (
         <div className="app">
+            
             <Header />
             <EntryForm onAddEntry={addEntry} />
 

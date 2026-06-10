@@ -24,8 +24,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 ---
 
 ## 3. React Hooks
-- ⬜ useState
-- ⬜ useEffect
+- ✅ useState
+- ✅ useEffect
 - ⬜ useRef
 - ⬜ useReducer
 - ⬜ useContext
