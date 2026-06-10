@@ -17,9 +17,9 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 - ✅ Props
 - ✅ State
 - ✅ Event Handling
-- ⬜ Conditional Rendering
-- ⬜ Rendering Lists
-- ⬜ Forms & Controlled Components
+- ✅ Conditional Rendering
+- ✅ Rendering Lists
+- ✅ Forms & Controlled Components
 
 ---
 
