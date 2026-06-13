@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-function JournalEntry({title,date,body}) {
+function JournalEntry({id, title, date, body, onDelete}) {
 
   const[count , setCount] = useState(0);
 
@@ -16,6 +16,7 @@ function JournalEntry({title,date,body}) {
       <p className="entry-body">{body}</p>
       <button onClick={handleLike}> ❤️ {count} </button>
       {count>0 && <p>Liked!</p>}
+       <button onClick={() => onDelete(id)}>Delete</button>
     </div>
   )
 

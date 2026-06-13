@@ -27,8 +27,8 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 - ✅ useState
 - ✅ useEffect
 - ✅ useRef
-- ⬜ useReducer
-- ⬜ useContext
+- ✅ useReducer
+- ✅ useContext
 - ⬜ Custom Hooks (usePosts done, needs more practice)
 
 ---

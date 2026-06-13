@@ -2,7 +2,8 @@ import Header from "./components/Header";
 import JournalEntry from "./components/JournalEntry";
 import "./App.css";
 import EntryForm from "./components/EntryForm";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer , useContext, useState } from "react";
+import { ThemeContext } from "./ThemeContext";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -39,20 +40,33 @@ const App = () => {
             payload: newEntry,
         });
     };
+    const deleteEntry = (id) => {
+        dispatch({
+            type: "DELETE_ENTRY",
+            payload: id,
+        });
+    };
+
+
 
     useEffect(() => {
         document.title = `My Journal (${entries.length} entries)`;
     }, [entries]);
 
+    const [theme , setTheme] = useState("light");
     return (
+        <ThemeContext.Provider value={theme}>
         <div className="app">
-            <Header />
-            <EntryForm onAddEntry={addEntry} />
-
-            {entries.map((entry) => (
-                <JournalEntry key={entry.id} {...entry} />
-            ))}
+             <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+        {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+      </button>
+      <Header />
+      <EntryForm onAddEntry={addEntry} />
+      {entries.map((entry) => (
+        <JournalEntry key={entry.id} {...entry} onDelete={deleteEntry} />
+      ))}
         </div>
+        </ThemeContext.Provider>
     );
 };
 
