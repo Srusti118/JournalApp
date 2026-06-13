@@ -52,7 +52,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 
 ## 6. Styling
 - ✅ CSS Modules
-- ⬜ Tailwind CSS
+- 🔄 Tailwind CSS
 - ⬜ Styled Components (optional)
 
 ---

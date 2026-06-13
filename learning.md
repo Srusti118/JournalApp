@@ -368,3 +368,30 @@ main.jsx
 - Global state (theme) → Context (no prop drilling)
 - Page state (entries) → props from App → page component → child components
 - Browser persistence → custom hook (useLocalStorage) abstracts the logic
+
+---
+
+## CSS Modules
+
+### Key Concepts
+- File must be named `Component.module.css` — the `.module` tells the bundler to scope it
+- Import as an object: `import styles from './Component.module.css'`
+- Use via `className={styles.className}` — never a plain string
+- Every class gets auto-hashed at build time → zero global clashes
+- One import gives you all classes in that file as object keys
+
+```
+.card  →  styles.card  →  "card_x7k2p" (in DOM)
+.title →  styles.title →  "title_a3m9k" (in DOM)
+```
+
+### When to use
+- Scoped styles for a specific component
+- When you want zero risk of class name conflicts across files
+- Co-locate styles with the component they belong to
+
+### Production Tips
+- Name the file after the component — `JournalEntry.module.css` for `JournalEntry.jsx`
+- Keep class names short — the component name is already the namespace
+- Global styles (resets, typography, themes) still go in `index.css` or `App.css`
+- CSS Modules and global CSS can coexist in the same project
