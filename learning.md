@@ -395,3 +395,38 @@ main.jsx
 - Keep class names short — the component name is already the namespace
 - Global styles (resets, typography, themes) still go in `index.css` or `App.css`
 - CSS Modules and global CSS can coexist in the same project
+
+---
+
+## Tailwind CSS
+
+### Key Concepts
+- Utility-first CSS — apply single-purpose classes directly in JSX, no separate CSS file
+- Each class does one thing: `p-4` = padding, `text-gray-500` = color, `flex` = display
+- Install via `npm install tailwindcss @tailwindcss/vite`
+- Add plugin to `vite.config.js`, add `@import "tailwindcss"` to `index.css`
+- At build time, only used classes are included — tiny production bundle
+
+### Common Classes
+```
+Layout:    flex, grid, block, hidden
+Spacing:   p-4, px-4, py-4, m-4, mx-auto, mb-4, mt-4, gap-4
+Sizing:    w-full, max-w-xl, h-10
+Border:    border, border-gray-200, rounded, rounded-xl
+Text:      text-sm, text-xl, text-2xl, font-semibold, text-gray-500
+Color:     bg-white, bg-gray-100, text-gray-800
+Hover:     hover:text-gray-900, hover:bg-gray-100
+```
+
+### vs CSS Modules
+```
+CSS Modules  → scoped CSS, good for complex component styles
+Tailwind     → utility classes inline, good for rapid UI building
+```
+Both can coexist in the same project — use what fits the situation.
+
+### Production Tips
+- Don't worry about memorizing classes — you'll learn the common ones naturally
+- Use the Tailwind docs (tailwindcss.com) as a reference — excellent search
+- Install the Tailwind CSS IntelliSense VS Code extension for autocomplete
+- Avoid long className strings — extract into a component if it gets unwieldy

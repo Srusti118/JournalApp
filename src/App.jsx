@@ -1,7 +1,5 @@
 import Header from "./components/Header";
-import JournalEntry from "./components/JournalEntry";
 import "./App.css";
-import EntryForm from "./components/EntryForm";
 import { useEffect, useState } from "react";
 import { ThemeContext } from "./ThemeContext";
 import useLocalStorage from './hooks/useLocalStorage'

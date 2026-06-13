@@ -52,14 +52,14 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 
 ## 6. Styling
 - ✅ CSS Modules
-- 🔄 Tailwind CSS
+- ✅ Tailwind CSS
 - ⬜ Styled Components (optional)
 
 ---
 
 ## 7. Forms
-- ⬜ Controlled Forms
-- ⬜ Form Validation
+- ✅ Controlled Forms
+- 🔄 Form Validation
 - ⬜ React Hook Form
 
 ---
