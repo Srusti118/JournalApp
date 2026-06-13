@@ -88,3 +88,33 @@
 .form-button:hover {
   background: #555;
 }
+
+/* Dark mode */
+.app.dark {
+  background: #1a1a2e;
+  color: #eee;
+}
+
+.app.dark .entry-card {
+  background: #16213e;
+  border-color: #444;
+}
+
+.app.dark .entry-body {
+  color: #ccc;
+}
+
+.app.dark .entry-date {
+  color: #888;
+}
+
+.app.dark .form-input,
+.app.dark .form-textarea {
+  background: #16213e;
+  border-color: #444;
+  color: #eee;
+}
+
+.app.dark .entry-form {
+  border-color: #444;
+}

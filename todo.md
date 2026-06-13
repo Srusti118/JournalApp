@@ -34,9 +34,9 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 ---
 
 ## 4. Component Communication
-- ⬜ Props Drilling
-- ⬜ Lifting State Up
-- ⬜ Context API (Provider pattern implemented with ThemeContext)
+- ✅ Props Drilling
+- ✅ Lifting State Up
+- ✅ Context API (Provider pattern implemented with ThemeContext)
 
 ---
 
