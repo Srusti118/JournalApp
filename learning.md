@@ -245,3 +245,48 @@ Provider wraps tree → any consumer reads value directly → no prop drilling
 - Remove all `console.log` before shipping
 - Always handle loading and error states when fetching data
 - Use React DevTools to inspect component tree and state during development
+
+---
+
+## Custom Hooks
+
+### Key Concepts
+- A custom hook is a function that starts with `use` and calls other hooks inside it
+- Extracts reusable stateful logic out of components
+- Returns whatever the component needs — value, array, object, functions
+- The `use` prefix is required — React enforces hook rules on it
+
+```
+Component A  ──┐
+Component B  ──┼──► useLocalStorage (one place, reused everywhere)
+Component C  ──┘
+```
+
+### Pattern
+```js
+const useCustomHook = (params) => {
+  // hooks inside
+  const [value, setValue] = useState(...)
+  useEffect(() => { ... }, [...])
+
+  // return what components need
+  return [value, setValue]
+}
+```
+
+### Lazy Initialization in useState
+```js
+// function passed to useState runs only once on mount — good for expensive operations
+const [value, setValue] = useState(() => {
+  const stored = localStorage.getItem(key)
+  return stored ? JSON.parse(stored) : initialValue
+})
+```
+
+### Production Tips
+- Always start the name with `use` — non-negotiable
+- Keep hooks focused — one concern per hook (`useLocalStorage`, `useWindowSize`, `useFetch`)
+- Store hooks in `src/hooks/` folder
+- A hook can call other custom hooks inside it
+- Don't call hooks conditionally — always at the top level of the function
+- Custom hooks are the right pattern when you find yourself copy-pasting `useState` + `useEffect` combos across components

@@ -29,7 +29,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 - ✅ useRef
 - ✅ useReducer
 - ✅ useContext
-- ⬜ Custom Hooks (usePosts done, needs more practice)
+- ✅ Custom Hooks (usePosts done, needs more practice)
 
 ---
 
@@ -82,7 +82,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 ## 10. Advanced React
 - ⬜ HOC
 - ⬜ Render Props
-- ⬜ Compound Components
+- ⬜ Compound Components 
 - ⬜ Portals
 - ⬜ Error Boundaries
 
