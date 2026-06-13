@@ -21,28 +21,6 @@
   font-size: 0.95rem;
 }
 
-.entry-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 16px;
-}
-
-.entry-date {
-  font-size: 0.8rem;
-  color: #aaa;
-}
-
-.entry-title {
-  margin: 6px 0 10px;
-  font-size: 1.2rem;
-}
-
-.entry-body {
-  margin: 0;
-  color: #555;
-  line-height: 1.6;
-}
 
 .entry-form {
   display: flex;

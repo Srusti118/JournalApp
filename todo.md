@@ -41,17 +41,17 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 ---
 
 ## 5. Routing
-- ⬜ React Router basics
-- ⬜ Routes & Links
-- ⬜ Dynamic Routes
-- ⬜ Route Parameters
+- ✅ React Router basics
+- ✅ Routes & Links
+- ✅ Dynamic Routes
+- ✅ Route Parameters
 - ⬜ Nested Routes
 - ⬜ Protected Routes
 
 ---
 
 ## 6. Styling
-- ⬜ CSS Modules
+- ✅ CSS Modules
 - ⬜ Tailwind CSS
 - ⬜ Styled Components (optional)
 

@@ -5,6 +5,9 @@ import EntryForm from "./components/EntryForm";
 import { useEffect, useState } from "react";
 import { ThemeContext } from "./ThemeContext";
 import useLocalStorage from './hooks/useLocalStorage'
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import About from './pages/About'
 
 const App = () => {
   const [entries, setEntries] = useLocalStorage('journal-entries', [])
@@ -24,15 +27,19 @@ const App = () => {
 
   return (
     <ThemeContext.Provider value={theme}>
+
+      
       <div className={`app ${theme}`}>
-        <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+        
+        <Header />
+         <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
           {theme === "light" ? "🌙 Dark" : "☀️ Light"}
         </button>
-        <Header />
-        <EntryForm onAddEntry={addEntry} />
-        {entries.map((entry) => (
-          <JournalEntry key={entry.id} {...entry} onDelete={deleteEntry} />
-        ))}
+        <Routes>
+          <Route path="/" element={<Home entries={entries} addEntry={addEntry} deleteEntry={deleteEntry} />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+       
       </div>
     </ThemeContext.Provider>
   )

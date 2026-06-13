@@ -1,0 +1,53 @@
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.title {
+  margin: 6px 0 10px;
+  font-size: 1.2rem;
+}
+
+.body {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.likeBtn {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.deleteBtn {
+  background: none;
+  border: 1px solid #ffcccc;
+  color: #e74c3c;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.liked {
+  font-size: 0.85rem;
+  color: #e74c3c;
+}

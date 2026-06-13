@@ -290,3 +290,81 @@ const [value, setValue] = useState(() => {
 - A hook can call other custom hooks inside it
 - Don't call hooks conditionally — always at the top level of the function
 - Custom hooks are the right pattern when you find yourself copy-pasting `useState` + `useEffect` combos across components
+
+---
+
+## Routing (React Router DOM)
+
+### Key Concepts
+- React has no built-in router — `react-router-dom` is the standard
+- `BrowserRouter` — wraps the entire app in `main.jsx`, enables URL routing
+- `Routes` — container for all route definitions
+- `Route` — maps a URL path to a component
+- `Link` — client-side navigation, no page refresh (use instead of `<a>`)
+
+### Setup
+```
+main.jsx → BrowserRouter wraps App
+App.jsx  → Routes + Route definitions
+Header   → Link components for navigation
+pages/   → one component per route
+```
+
+### Basic Pattern
+```jsx
+// main.jsx
+<BrowserRouter>
+  <App />
+</BrowserRouter>
+
+// App.jsx
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
+</Routes>
+
+// Header.jsx
+<Link to="/">Home</Link>
+<Link to="/about">About</Link>
+```
+
+### Flow Diagram
+```
+URL changes
+    ↓
+BrowserRouter detects it
+    ↓
+Routes finds matching Route
+    ↓
+Renders the element for that path
+```
+
+### Production Tips
+- Always use `Link` instead of `<a href>` — `<a>` causes full page refresh
+- Keep `BrowserRouter` in `main.jsx`, `Routes` in `App.jsx`
+- Put page components in `src/pages/`, reusable UI in `src/components/`
+- Pass page-specific data as props from `App` to page components
+- Use `NavLink` instead of `Link` when you need active link styling
+
+---
+
+## Full App Data Flow (Journal App)
+
+```
+main.jsx
+└── BrowserRouter
+    └── App.jsx (owns entries state + theme state)
+        ├── ThemeContext.Provider → Header reads theme via useContext
+        ├── Routes
+        │   ├── / → Home.jsx (entries, addEntry, deleteEntry via props)
+        │   │   ├── EntryForm → calls addEntry on submit
+        │   │   └── JournalEntry → calls deleteEntry on delete
+        │   └── /about → About.jsx
+        └── useLocalStorage → persists entries to browser storage
+```
+
+### Key Principle
+- State lives as high as needed, passed down only as far as needed
+- Global state (theme) → Context (no prop drilling)
+- Page state (entries) → props from App → page component → child components
+- Browser persistence → custom hook (useLocalStorage) abstracts the logic
