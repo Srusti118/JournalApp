@@ -3,6 +3,7 @@ import { useState , useRef , useEffect } from "react";
 function EntryForm({ onAddEntry }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
+    const [errors,setErrors] = useState({});
     const titleRef = useRef(null);
 
     useEffect(()=> {

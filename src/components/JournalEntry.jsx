@@ -1,23 +1,35 @@
-import {useState} from 'react'
+import { useState, useContext } from 'react'
 import styles from './JournalEntry.module.css'
+import { ThemeContext } from '../ThemeContext'
 
-function JournalEntry({id, title, date, body, onDelete}) {
+function JournalEntry({ id, title, date, body, onDelete }) {
+  const [count, setCount] = useState(0)
+  const theme = useContext(ThemeContext)
+  const dark = theme === 'dark'
 
-  const[count , setCount] = useState(0);
+  const handleLike = () => setCount(prev => prev + 1)
 
-  const handleLike = () => {
-    setCount(prev => prev+1);
-  }
-  
   return (
-    <div className={styles.card}>
-      <span className={styles.date}>{date}</span>
-      <h2 className={styles.title}>{title}</h2>
-      <p className={styles.body}>{body}</p>
+    <div className={`${styles.card} ${dark ? styles.cardDark : ''}`}>
+      <span className={`${styles.date} ${dark ? styles.dateDark : ''}`}>{date}</span>
+      <h2 className={`${styles.title} ${dark ? styles.titleDark : ''}`}>{title}</h2>
+      <p className={`${styles.body} ${dark ? styles.bodyDark : ''}`}>{body}</p>
       <div className={styles.actions}>
-        <button className={styles.likeBtn} onClick={handleLike}>❤️ {count}</button>
-        {count > 0 && <span className={styles.liked}>Liked!</span>}
-        <button className={styles.deleteBtn} onClick={() => onDelete(id)}>Delete</button>
+        <button
+          className={`${styles.likeBtn} ${dark ? styles.likeBtnDark : ''}`}
+          onClick={handleLike}
+        >
+          ❤️ {count}
+        </button>
+        {count > 0 && (
+          <span className={`${styles.liked} ${dark ? styles.likedDark : ''}`}>Liked!</span>
+        )}
+        <button
+          className={`${styles.deleteBtn} ${dark ? styles.deleteBtnDark : ''}`}
+          onClick={() => onDelete(id)}
+        >
+          Delete
+        </button>
       </div>
     </div>
   )

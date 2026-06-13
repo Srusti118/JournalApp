@@ -1,20 +1,31 @@
 import { useContext } from "react"
 import { ThemeContext } from "../ThemeContext"
 import { Link } from 'react-router-dom'
+import styles from './Header.module.css'
 
-function Header() {
+function Header({ onToggleTheme }) {
   const theme = useContext(ThemeContext)
+  const dark = theme === 'dark'
 
   return (
-    <header className="flex items-center justify-between py-4 mb-6 border-b border-gray-200">
+    <header className={`${styles.header} ${dark ? styles.headerDark : ''}`}>
       <div>
-        <h1 className="text-2xl font-semibold text-gray-800">Your Journal</h1>
-        <p className="text-sm text-gray-400">A space for your thoughts</p>
+        <h1 className={`${styles.title} ${dark ? styles.titleDark : ''}`}>
+          Your Journal
+        </h1>
+        <p className={`${styles.subtitle} ${dark ? styles.subtitleDark : ''}`}>
+          A space for your thoughts
+        </p>
       </div>
-      <nav className="flex gap-4 items-center">
-        <Link to="/" className="text-gray-600 hover:text-gray-900 text-sm">Home</Link>
-        <Link to="/about" className="text-gray-600 hover:text-gray-900 text-sm">About</Link>
-        <span className="text-xs text-gray-400 capitalize">{theme} mode</span>
+      <nav className={styles.nav}>
+        <Link to="/" className={`${styles.link} ${dark ? styles.linkDark : ''}`}>Home</Link>
+        <Link to="/about" className={`${styles.link} ${dark ? styles.linkDark : ''}`}>About</Link>
+        <button
+          onClick={onToggleTheme}
+          className={`${styles.toggleBtn} ${dark ? styles.toggleBtnDark : ''}`}
+        >
+          {dark ? '☀️' : '🌙'}
+        </button>
       </nav>
     </header>
   )

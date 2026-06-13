@@ -25,19 +25,14 @@ const App = () => {
 
   return (
     <ThemeContext.Provider value={theme}>
-
-      
       <div className={`app ${theme}`}>
-        
-        <Header />
-         <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-        </button>
-        <Routes>
-          <Route path="/" element={<Home entries={entries} addEntry={addEntry} deleteEntry={deleteEntry} />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-       
+        <div className="appInner">
+          <Header onToggleTheme={() => setTheme(theme === 'light' ? 'dark' : 'light')} />
+          <Routes>
+            <Route path="/" element={<Home entries={entries} addEntry={addEntry} deleteEntry={deleteEntry} />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </div>
       </div>
     </ThemeContext.Provider>
   )
