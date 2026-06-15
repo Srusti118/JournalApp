@@ -65,15 +65,15 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 ---
 
 ## 8. API Handling
-- ⬜ fetch API
-- ⬜ Async/Await
-- ⬜ Loading & Error States
+- ✅ fetch API
+- ✅ Async/Await
+- ✅ Loading & Error States
 - ⬜ Axios
 
 ---
 
 ## 9. State Management
-- ⬜ Context API + useReducer
+- 🔄 Context API + useReducer (needs practice in larger project)
 - ⬜ Zustand
 - ⬜ Redux Toolkit
 

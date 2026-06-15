@@ -96,3 +96,78 @@
 .form-button:hover {
   background: #d04060;
 }
+
+/* ── Inspiration Section ── */
+.inspiration-section {
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #ffe8f0 0%, #fff5f7 100%);
+  border: 1px solid #ffc0cc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(220, 80, 120, 0.05);
+  text-align: center;
+}
+
+.inspiration-loading {
+  color: #a06070;
+  font-style: italic;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.inspiration-error {
+  color: #e8607a;
+  margin: 0;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.inspiration-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inspiration-quote {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #3d1a24;
+  margin: 0;
+  font-style: italic;
+}
+
+.inspiration-author {
+  color: #8b3050;
+  font-weight: 600;
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.inspiration-section .form-button {
+  padding: 6px 18px;
+  font-size: 0.8rem;
+  align-self: center;
+  margin-top: 4px;
+}
+
+/* Dark mode for inspiration */
+.app.dark .inspiration-section {
+  background: linear-gradient(135deg, #3d1020 0%, #4d1828 100%);
+  border-color: #6b2a3a;
+}
+
+.app.dark .inspiration-loading {
+  color: #c08090;
+}
+
+.app.dark .inspiration-error {
+  color: #ff85a0;
+}
+
+.app.dark .inspiration-quote {
+  color: #f5d0dc;
+}
+
+.app.dark .inspiration-author {
+  color: #ff9db3;
+}

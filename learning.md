@@ -499,3 +499,111 @@ const { register, handleSubmit, reset, formState: { errors }, setFocus } = useFo
 - `watch("field")` for live field observation (dependent fields, previews)
 - `setValue` for pre-filling edit forms
 - Far less re-renders than manual controlled inputs — better performance
+
+
+---
+
+## API Handling
+
+### Key Concepts
+- `fetch(url)` returns a **Promise** — use `await` or `.then()` to get the response
+- Response must be parsed with `.json()` — also returns a Promise, so `await` it too
+- `fetch` only throws on **network failure** (no internet, DNS error) — not on HTTP errors (404, 500)
+- Always check `res.ok` or `res.status` manually — HTTP 4xx/5xx do not throw by default
+
+### Basic Pattern
+```js
+const getData = async () => {
+  const res = await fetch('https://api.example.com/data')
+  const data = await res.json()
+  console.log(data)
+}
+```
+
+### Loading & Error States (Production Pattern)
+```js
+const [data, setData] = useState([])
+const [loading, setLoading] = useState(false)
+const [error, setError] = useState(null)
+
+const fetchData = async () => {
+  setLoading(true)
+  setError(null)
+  try {
+    const res = await fetch(url)
+    if (!res.ok) throw new Error('Failed to fetch')
+    const data = await res.json()
+    setData(data)
+  } catch (err) {
+    setError(err.message)
+  } finally {
+    setLoading(false)  // runs no matter what — perfect for cleanup
+  }
+}
+
+useEffect(() => {
+  fetchData()
+}, [])
+```
+
+### Rendering States
+```jsx
+{loading && <p>Loading...</p>}
+{error && <p style={{color: 'red'}}>Error: {error}</p>}
+{data && <Component data={data} />}
+```
+
+### Why `finally` is important
+- `finally` runs whether the `try` succeeds or `catch` catches an error
+- Perfect for turning off loading state — no need to duplicate `setLoading(false)` in both blocks
+
+### Why check `res.ok`?
+```js
+// ❌ This DOES NOT throw on 404, 500, etc.
+const res = await fetch(url)
+const data = await res.json()  // might be an error object from server
+
+// ✅ This throws on any HTTP error
+const res = await fetch(url)
+if (!res.ok) throw new Error('Failed to fetch')
+const data = await res.json()
+```
+
+### Production Tips
+- Always handle loading, error, and success states — never show stale data during refetch
+- Clear previous errors before new fetch: `setError(null)` at the start
+- Define fetch function outside `useEffect` if you need to reuse it (button refetch, retry logic)
+- For production apps, use **TanStack Query (React Query)** instead of manual fetch — handles caching, refetching, and more
+- Never hardcode API keys in the frontend — use environment variables and a backend proxy for sensitive APIs
+
+---
+
+## useEffect + fetch Pattern
+
+### Key Rule
+- You cannot make the `useEffect` callback itself `async` — it expects a cleanup function, not a Promise
+
+```js
+// ❌ Wrong
+useEffect(async () => {
+  const data = await fetch(url)
+}, [])
+
+// ✅ Correct — define async function inside, then call it
+useEffect(() => {
+  const fetchData = async () => {
+    const res = await fetch(url)
+    const data = await res.json()
+    setData(data)
+  }
+  fetchData()
+}, [])
+```
+
+### Why?
+- `useEffect` expects the callback to return nothing or a cleanup function
+- An `async` function always returns a Promise, which breaks the contract
+
+### Production Tips
+- If you need the fetch function elsewhere (refetch button), define it outside `useEffect` so it's reusable
+- If you only fetch on mount, define it inside `useEffect` to keep it scoped
