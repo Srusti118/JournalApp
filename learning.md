@@ -430,3 +430,72 @@ Both can coexist in the same project — use what fits the situation.
 - Use the Tailwind docs (tailwindcss.com) as a reference — excellent search
 - Install the Tailwind CSS IntelliSense VS Code extension for autocomplete
 - Avoid long className strings — extract into a component if it gets unwieldy
+
+---
+
+## Form Validation
+
+### Key Concepts
+- Validate on submit — call validate(), check for errors, return early if any
+- `Object.keys(errors).length > 0` — checks if any errors exist
+- `.trim()` — always trim before validating, prevents spaces-only input
+- Clear field error on change — immediate feedback as user fixes the issue
+- Reset form after successful submit — `setTitle(""), setBody("")`
+
+### Pattern
+```jsx
+const validate = () => {
+  const errors = {}
+  if (!title.trim()) errors.title = "Required"
+  if (body.trim().length < 10) errors.body = "Too short"
+  return errors
+}
+
+const handleSubmit = (e) => {
+  e.preventDefault()
+  const errors = validate()
+  if (Object.keys(errors).length > 0) { setErrors(errors); return }
+  // submit...
+}
+```
+
+### Production Tips
+- Show errors inline next to each field, not as a generic top-level message
+- Clear individual field errors on change, not all errors at once
+- For complex forms, use React Hook Form instead of manual state
+
+---
+
+## React Hook Form (RHF)
+
+### Key Concepts
+- Replaces manual `useState` for each field with `register`
+- `register(name, rules)` — spreads name, onChange, onBlur, ref onto input
+- `handleSubmit(onSubmit)` — validates first, then calls onSubmit with form data
+- `formState: { errors }` — contains validation errors per field
+- `reset()` — clears all fields
+- `setFocus(name)` — programmatically focus a field (replaces useRef)
+
+### Pattern
+```jsx
+const { register, handleSubmit, reset, formState: { errors }, setFocus } = useForm()
+
+<input {...register("title", { required: "Required" })} />
+{errors.title && <p>{errors.title.message}</p>}
+```
+
+### Validation Rules
+```jsx
+{ required: "message" }
+{ minLength: { value: 10, message: "message" } }
+{ maxLength: { value: 100, message: "message" } }
+{ pattern: { value: /regex/, message: "message" } }
+{ valueAsNumber: true }  // converts string input to number
+```
+
+### Production Tips
+- Use `mode: "onBlur"` for better UX — validates when user leaves a field
+- Use with Zod for type-safe schema validation in TypeScript projects
+- `watch("field")` for live field observation (dependent fields, previews)
+- `setValue` for pre-filling edit forms
+- Far less re-renders than manual controlled inputs — better performance
