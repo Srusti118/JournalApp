@@ -59,7 +59,7 @@ Legend: ✅ done · 🔄 in progress · ⬜ not started
 
 ## 7. Forms
 - ✅ Controlled Forms
-- 🔄 Form Validation
+- ✅ Form Validation
 - ⬜ React Hook Form
 
 ---
