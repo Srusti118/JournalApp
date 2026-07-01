@@ -51,7 +51,7 @@ const Home = ({ entries, addEntry, deleteEntry }) => {
 
             {entries.map((entry) => (
                 <JournalEntry
-                    key={entry.id}
+                    key={entry._id}
                     {...entry}
                     onDelete={deleteEntry}
                 />

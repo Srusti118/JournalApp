@@ -607,3 +607,160 @@ useEffect(() => {
 ### Production Tips
 - If you need the fetch function elsewhere (refetch button), define it outside `useEffect` so it's reusable
 - If you only fetch on mount, define it inside `useEffect` to keep it scoped
+
+
+---
+
+## State Management (Context API + useReducer)
+
+### The Problem: Prop Drilling
+```
+App (owns state)
+ ├─ PageA (passes props down)
+ │   └─ ComponentB (passes props down)
+ │       └─ ComponentC (finally uses it)
+```
+Every layer in between has to pass props even if it doesn't use them. Gets messy fast.
+
+### The Solution: Global State Store
+Create a store that any component can access directly — no props needed.
+
+```
+App
+ └─ StoreProvider (wraps everything, holds state)
+     ├─ Header → reads state directly
+     ├─ PageA → dispatches actions directly
+     └─ ComponentC → reads state directly
+```
+
+### useReducer Pattern
+Instead of multiple `setState` calls, one `dispatch` function sends actions to a reducer:
+
+```js
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return [...state, action.payload]
+    case 'DELETE_ITEM':
+      return state.filter(item => item.id !== action.payload)
+    default:
+      return state
+  }
+}
+
+const [state, dispatch] = useReducer(reducer, initialState)
+
+// Update state:
+dispatch({ type: 'ADD_ITEM', payload: newItem })
+dispatch({ type: 'DELETE_ITEM', payload: id })
+```
+
+- `state` is the current state
+- `dispatch` is the function to send actions
+- `action` is an object with `type` (what happened) and `payload` (data)
+- Reducer is a pure function: `(state, action) => newState`
+
+### Combining Context + useReducer
+
+```js
+// 1. Create context
+const StoreContext = createContext()
+
+// 2. Create provider component
+const StoreProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  
+  return (
+    <StoreContext.Provider value={{ state, dispatch }}>
+      {children}
+    </StoreContext.Provider>
+  )
+}
+
+// 3. Wrap app
+<StoreProvider>
+  <App />
+</StoreProvider>
+
+// 4. Use in any component
+const { state, dispatch } = useContext(StoreContext
+
+
+---
+
+## State Management (Context + useReducer)
+
+### The Problem
+- As apps grow, passing state through many levels of components (prop drilling) becomes messy
+- Example: `App → Page → Section → Card → Button` — passing `onClick` through 5 levels
+- Hard to add new features that need shared state across distant components
+
+### The Solution: Context + useReducer
+- **Context** = global state container that any component can access
+- **useReducer** = manages complex state with actions instead of multiple `setState` calls
+- Combined = poor man's Redux, built into React
+
+### useReducer Pattern
+```js
+// Define how state updates based on actions
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return [...state, action.payload]
+    case 'DELETE_ITEM':
+      return state.filter(item => item.id !== action.payload)
+    case 'RESET':
+      return []
+    default:
+      return state
+  }
+}
+
+// Use it
+const [items, dispatch] = useReducer(reducer, [])
+
+// Update state by dispatching actions
+dispatch({ type: 'ADD_ITEM', payload: newItem })
+dispatch({ type: 'DELETE_ITEM', payload: id })
+```
+
+### Context + useReducer Together
+```js
+// 1. Create context
+const StoreContext = createContext()
+
+// 2. Create provider component
+const StoreProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return (
+    <StoreContext.Provider value={{ state, dispatch }}>
+      {children}
+    </StoreContext.Provider>
+  )
+}
+
+// 3. Wrap app
+<StoreProvider>
+  <App />
+</StoreProvider>
+
+// 4. Use anywhere
+const { state, dispatch } = useContext(StoreContext)
+```
+
+### When to Use
+- ✅ App has 5+ components that need the same state
+- ✅ State updates are complex (multiple related changes)
+- ✅ You're tired of prop drilling through 3+ levels
+- ❌ Simple parent→child communication (just use props)
+- ❌ Very small apps (overkill for a todo list)
+
+### Production Tips
+- Action types as constants to avoid typos: `const ADD_ITEM = 'ADD_ITEM'`
+- Keep reducers pure — no API calls, side effects, or mutations
+- Split large reducers into smaller ones
+- For very large apps, consider Zustand or Redux Toolkit instead
+- This pattern is the foundation for understanding Redux
+
+### Note
+This is best learned in a larger project where prop drilling becomes painful. Skip implementation in small apps.

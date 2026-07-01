@@ -10,10 +10,8 @@ function EntryForm({ onAddEntry }) {
 
   const onSubmit = (data) => {
     onAddEntry({
-      id: Date.now(),
       title: data.title,
-      body: data.body,
-      date: new Date().toLocaleDateString()
+      body: data.body
     })
     reset()
   }
