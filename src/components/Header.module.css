@@ -73,3 +73,39 @@
   border-color: #6b2a3a;
   color: #e090a8;
 }
+
+.userInfo {
+  font-size: 0.9rem;
+  color: #c04060;
+}
+
+.userInfoDark {
+  color: #e090a8;
+}
+
+.logoutBtn {
+  background: none;
+  border: 1px solid #ffc0cc;
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #c04060;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+  background: #ffc0cc;
+  color: #3d1a24;
+}
+
+.logoutBtnDark {
+  border-color: #6b2a3a;
+  color: #e090a8;
+}
+
+.logoutBtnDark:hover {
+  background: #6b2a3a;
+  color: #f5d0dc;
+}

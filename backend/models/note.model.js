@@ -12,6 +12,11 @@ const noteSchema = new mongoose.Schema(
       required: [true, "Body is required"],
       minLength: [10, "Entry must be at least 10 characters"],
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true, // automatically adds createdAt and updatedAt

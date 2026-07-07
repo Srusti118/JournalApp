@@ -3,7 +3,7 @@ import { ThemeContext } from "../ThemeContext"
 import { Link } from 'react-router-dom'
 import styles from './Header.module.css'
 
-function Header({ onToggleTheme }) {
+function Header({ onToggleTheme, user, onLogout }) {
   const theme = useContext(ThemeContext)
   const dark = theme === 'dark'
 
@@ -18,7 +18,24 @@ function Header({ onToggleTheme }) {
         </p>
       </div>
       <nav className={styles.nav}>
-        <Link to="/" className={`${styles.link} ${dark ? styles.linkDark : ''}`}>Home</Link>
+        {user ? (
+          <>
+            <span className={`${styles.userInfo} ${dark ? styles.userInfoDark : ''}`}>
+              Welcome, {user.username}
+            </span>
+            <button
+              onClick={onLogout}
+              className={`${styles.logoutBtn} ${dark ? styles.logoutBtnDark : ''}`}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className={`${styles.link} ${dark ? styles.linkDark : ''}`}>Login</Link>
+            <Link to="/register" className={`${styles.link} ${dark ? styles.linkDark : ''}`}>Register</Link>
+          </>
+        )}
         <Link to="/about" className={`${styles.link} ${dark ? styles.linkDark : ''}`}>About</Link>
         <button
           onClick={onToggleTheme}
