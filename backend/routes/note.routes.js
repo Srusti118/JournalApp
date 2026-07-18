@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const noteController = require("../controllers/note.controller");
-const { protect } = require("../middleware/auth.middleware");
+const { protectWithCsrf } = require("../middleware/auth.middleware");
 
-// All routes are protected
-router.use(protect);
+// All routes require auth + CSRF protection
+router.use(protectWithCsrf);
 
 // GET /api/notes - Get all notes
 router.get("/", noteController.getAllNotes);

@@ -19,6 +19,7 @@ const Login = ({ setUser, updateTokens }) => {
     try {
       const res = await fetch(`${API_URL}/login`, {
         method: "POST",
+        credentials: "include",  // Important: receive cookies
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
@@ -39,8 +40,8 @@ const Login = ({ setUser, updateTokens }) => {
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
       
-      // Store tokens using updateTokens
-      updateTokens(data.accessToken, data.refreshToken);
+      // Update access token (stored in memory) and CSRF token
+      updateTokens(data.accessToken, data.csrfToken);
       
       navigate("/");
     } catch (err) {

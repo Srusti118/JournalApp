@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import "./App.css";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { ThemeContext } from "./ThemeContext";
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
@@ -15,33 +15,40 @@ const App = () => {
   const [entries, setEntries] = useState([])
   const [theme, setTheme] = useState("light")
   const [loading, setLoading] = useState(true)
+  
+  // User persisted in localStorage
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem("user")
     return saved ? JSON.parse(saved) : null
   })
-  const [accessToken, setAccessToken] = useState(() => localStorage.getItem("accessToken"))
-  const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem("refreshToken"))
+  
+  // Access token in MEMORY only (not persisted for security)
+  const accessTokenRef = useRef(null)
+  const [, forceRender] = useState(0)
+  
+  // CSRF token (can be in state, it's meant to be read by JS)
+  const [csrfToken, setCsrfToken] = useState(() => localStorage.getItem("csrfToken"))
 
-  // Update tokens in state and localStorage
-  const updateTokens = useCallback((newAccessToken, newRefreshToken) => {
-    setAccessToken(newAccessToken)
-    setRefreshToken(newRefreshToken)
-    localStorage.setItem("accessToken", newAccessToken)
-    localStorage.setItem("refreshToken", newRefreshToken)
+  const setAccessToken = useCallback((token) => {
+    accessTokenRef.current = token
+    forceRender(n => n + 1)
   }, [])
 
-  // Refresh the access token using refresh token
-  const refreshAccessToken = useCallback(async () => {
-    const storedRefreshToken = localStorage.getItem("refreshToken")
-    if (!storedRefreshToken) {
-      return null
+  const updateTokens = useCallback((accessToken, newCsrfToken) => {
+    setAccessToken(accessToken)
+    if (newCsrfToken) {
+      setCsrfToken(newCsrfToken)
+      localStorage.setItem("csrfToken", newCsrfToken)
     }
+  }, [setAccessToken])
 
+  // Refresh the access token using refresh token (sent via cookie)
+  const refreshAccessToken = useCallback(async () => {
     try {
       const res = await fetch(`${AUTH_URL}/refresh-token`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken: storedRefreshToken })
+        credentials: "include",  // Send cookies
+        headers: { "Content-Type": "application/json" }
       })
 
       if (!res.ok) {
@@ -49,7 +56,7 @@ const App = () => {
       }
 
       const data = await res.json()
-      updateTokens(data.accessToken, data.refreshToken)
+      updateTokens(data.accessToken, data.csrfToken)
       return data.accessToken
     } catch (error) {
       console.error("Failed to refresh token:", error)
@@ -57,15 +64,17 @@ const App = () => {
     }
   }, [updateTokens])
 
-  // API fetch wrapper with auto-refresh
+  // API fetch wrapper with auto-refresh and CSRF
   const authFetch = useCallback(async (url, options = {}) => {
-    const currentToken = localStorage.getItem("accessToken")
+    const currentToken = accessTokenRef.current
     
     const res = await fetch(url, {
       ...options,
+      credentials: "include",  // Send cookies (refresh token)
       headers: {
         "Content-Type": "application/json",
         ...(currentToken ? { Authorization: `Bearer ${currentToken}` } : {}),
+        ...(csrfToken ? { "X-CSRF-Token": csrfToken } : {}),
         ...options.headers
       }
     })
@@ -81,9 +90,11 @@ const App = () => {
           // Retry with new token
           return fetch(url, {
             ...options,
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${newToken}`,
+              ...(csrfToken ? { "X-CSRF-Token": csrfToken } : {}),
               ...options.headers
             }
           })
@@ -95,55 +106,53 @@ const App = () => {
     }
 
     return res
-  }, [refreshAccessToken])
+  }, [csrfToken, refreshAccessToken])
 
-  const handleLogout = async () => {
-    const storedRefreshToken = localStorage.getItem("refreshToken")
-    
-    // Notify backend to invalidate refresh token
-    if (storedRefreshToken) {
-      try {
-        await fetch(`${AUTH_URL}/logout`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken: storedRefreshToken })
-        })
-      } catch (error) {
-        console.error("Logout error:", error)
-      }
+  const handleLogout = useCallback(async () => {
+    try {
+      await fetch(`${AUTH_URL}/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" }
+      })
+    } catch (error) {
+      console.error("Logout error:", error)
     }
 
     localStorage.removeItem("user")
-    localStorage.removeItem("accessToken")
-    localStorage.removeItem("refreshToken")
+    localStorage.removeItem("csrfToken")
     setUser(null)
     setAccessToken(null)
-    setRefreshToken(null)
+    setCsrfToken(null)
     setEntries([])
-  }
+  }, [setAccessToken])
 
-  // Fetch entries from backend on mount (only if logged in)
+  // Check auth status on mount
   useEffect(() => {
-    if (!accessToken) {
-      setLoading(false)
-      return
-    }
-
-    const fetchEntries = async () => {
-      try {
-        const res = await authFetch(API_URL)
-        if (res.ok) {
-          const data = await res.json()
-          setEntries(data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch entries:", error)
-      } finally {
+    const checkAuth = async () => {
+      if (!user) {
         setLoading(false)
+        return
       }
+
+      // Try to refresh token on mount (refresh token in cookie will be sent)
+      const newToken = await refreshAccessToken()
+      if (newToken) {
+        // Fetch entries
+        try {
+          const res = await authFetch(API_URL)
+          if (res.ok) {
+            const data = await res.json()
+            setEntries(data)
+          }
+        } catch (error) {
+          console.error("Failed to fetch entries:", error)
+        }
+      }
+      setLoading(false)
     }
-    fetchEntries()
-  }, [accessToken])
+    checkAuth()
+  }, [])
 
   const addEntry = async (newEntry) => {
     try {
