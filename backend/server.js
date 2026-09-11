@@ -3,52 +3,62 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db/db");
-const noteRoutes = require("./routes/note.routes");
-const authRoutes = require("./routes/auth.routes");
+const { errorHandler } = require("./middleware/errorHandler");
+const { validateEnv, config } = require("./config/constants");
 
-// Debug: Check if env variable is loaded
-console.log("MONGODB_URI:", process.env.MONGODB_URI);
-console.log("JWT_SECRET:", process.env.JWT_SECRET ? "✅ Set" : "⚠️ Not set (using default)");
+// Validate environment
+validateEnv();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Allowed origins for CORS
-const allowedOrigins = [
-  "http://localhost:5173",  // Vite dev server
-  "http://localhost:5174",
-  "http://localhost:3000",
-];
+// Trust proxy (for production behind reverse proxy)
+app.set("trust proxy", 1);
 
 // Middleware
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,  // Allow cookies to be sent
-}));
+app.use(
+  cors({
+    origin: config.corsOrigins,
+    credentials: true,
+  })
+);
 app.use(express.json());
-app.use(cookieParser()); // Parse cookies
-
-// Connect to MongoDB
-connectDB();
-
-// Routes
-app.use("/api/notes", noteRoutes);
-app.use("/api/auth", authRoutes);
+app.use(cookieParser());
 
 // Health check
-app.get("/", (req, res) => {
-  res.json({ message: "Journal API is running" });
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+// Routes
+const authRoutes = require("./routes/auth.routes");
+const noteRoutes = require("./routes/note.routes");
+
+app.use("/api/auth", authRoutes);
+app.use("/api/notes", noteRoutes);
+
+// Error handling
+app.use(errorHandler);
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    code: "NOT_FOUND",
+  });
 });
+
+// Connect to database and start server
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(config.port, () => {
+      console.log(`Server running in ${config.nodeEnv} mode on port ${config.port}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();

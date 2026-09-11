@@ -1,37 +1,58 @@
 const Note = require("../models/note.model");
+const { AppError } = require("../middleware/errorHandler");
 
-// Get all notes for logged-in user
-exports.getAllNotes = async (req, res) => {
+// Get all notes for user
+exports.getAllNotes = async (req, res, next) => {
   try {
     const notes = await Note.find({ user: req.user._id }).sort({ createdAt: -1 });
-    res.status(200).json(notes);
+
+    res.json({
+      success: true,
+      data: { notes },
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-// Create a new note
-exports.createNote = async (req, res) => {
+// Create note
+exports.createNote = async (req, res, next) => {
   try {
     const { title, body } = req.body;
-    const note = await Note.create({ title, body, user: req.user._id });
-    res.status(201).json(note);
+
+    const note = await Note.create({
+      title,
+      body,
+      user: req.user._id,
+    });
+
+    res.status(201).json({
+      success: true,
+      data: { note },
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    next(error);
   }
 };
 
-// Delete a note (only if owned by user)
-exports.deleteNote = async (req, res) => {
+// Delete note
+exports.deleteNote = async (req, res, next) => {
   try {
     const { id } = req.params;
+
     const note = await Note.findOne({ _id: id, user: req.user._id });
+
     if (!note) {
-      return res.status(404).json({ message: "Note not found" });
+      return next(new AppError("Note not found", 404, "NOTE_NOT_FOUND"));
     }
+
     await note.deleteOne();
-    res.status(200).json({ message: "Note deleted successfully" });
+
+    res.json({
+      success: true,
+      message: "Note deleted successfully",
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
