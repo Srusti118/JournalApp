@@ -48,25 +48,25 @@ Use this file to track progress topic by topic.
 
 ## 7. Environment Variables
 
-- [ ] Create `.env`
-- [ ] Use `dotenv`
-- [ ] Move `PORT` to `.env`
-- [ ] Add `JWT_SECRET`
-- [ ] Add database URL
+- [ ☑️ ] Create `.env`
+- [ ☑️ ] Use `dotenv`
+- [ ☑️ ] Move `PORT` to `.env`
+- [ ☑️ ] Add `JWT_SECRET`
+- [ ☑️ ] Add database URL
 
 ## 8. MongoDB + Mongoose
 
-- [ ] Learn MongoDB basics
-- [ ] Learn Mongoose basics
-- [ ] Create `User` model
-- [ ] Create `Note` model
-- [ ] Connect database using `.env`
+- [ ☑️ ] Learn MongoDB basics
+- [ ☑️ ] Learn Mongoose basics
+- [ ☑️ ] Create `User` model
+- [ ☑️ ] Create `Note` model
+- [ ☑️ ] Connect database using `.env`
 
 ## 9. Database Design Basics
 
-- [ ] Understand one-to-many relationships
-- [ ] Understand User -> Notes relationship
-- [ ] Understand referencing IDs
+- [ ☑️ ] Understand one-to-many relationships
+- [ ☑️ ] Understand User -> Notes relationship
+- [ ☑️ ] Understand referencing IDs
 
 ## 10. Cookies vs JWT
 
