@@ -70,21 +70,21 @@ Use this file to track progress topic by topic.
 
 ## 10. Cookies vs JWT
 
-- [ ] Understand token-based auth
-- [ ] Understand where JWT can be stored
-- [ ] Use httpOnly cookies for refresh tokens
-- [ ] Use localStorage for access tokens with CSRF protection
+- [ ☑️ ] Understand token-based auth
+- [ ☑️ ] Understand where JWT can be stored
+- [ ☑️ ] Use httpOnly cookies for refresh tokens
+- [ ☑️ ] Use localStorage for access tokens with CSRF protection
 
 ## 11. Authentication
 
-- [ ] Learn password hashing with bcrypt
-- [ ] Hash password during signup
-- [ ] Compare hashed password during login
-- [ ] Learn JWT basics
-- [ ] Return JWT after login
-- [ ] Create auth middleware
-- [ ] Protect journal/note routes
-- [ ] Stop trusting `userId` from frontend
+- [ ☑️ ] Learn password hashing with bcrypt
+- [ ☑️ ] Hash password during signup
+- [ ☑️ ] Compare hashed password during login
+- [ ☑️ ] Learn JWT basics
+- [ ☑️ ] Return JWT after login
+- [ ☑️ ] Create auth middleware
+- [ ☑️ ] Protect journal/note routes
+- [ ☑️ ] Stop trusting `userId` from frontend
 
 ## 12. Social Authentication (OAuth 2.0)
 
