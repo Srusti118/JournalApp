@@ -32,19 +32,19 @@ Use this file to track progress topic by topic.
 
 ## 4. Node.js Module System
 
-- [ ] Understand `require(...)`
-- [ ] Understand `module.exports`
-- [ ] Understand `./` relative path
-- [ ] Understand `../` relative path
-- [ ] Understand path patterns
-- [ ] Understand CommonJS modules
+- [ ☑️ ] Understand `require(...)`
+- [ ☑️ ] Understand `module.exports`
+- [ ☑️ ] Understand `./` relative path
+- [ ☑️ ] Understand `../` relative path
+- [ ☑️ ] Understand path patterns
+- [ ☑️ ] Understand CommonJS modules
 
 ## 5. Async/Await
 
-- [ ] Learn async/await
-- [ ] Use async/await in controllers
-- [ ] Use async/await in services
-- [ ] Handle async errors with try-catch
+- [ ☑️ ] Learn async/await
+- [ ☑️ ] Use async/await in controllers
+- [ ☑️ ] Use async/await in services
+- [ ☑️ ] Handle async errors with try-catch
 
 ## 7. Environment Variables
 
