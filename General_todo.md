@@ -23,12 +23,12 @@ Use this file to track progress topic by topic.
 
 ## 3. Project Structure
 
-- [ ] Create `controllers` folder
-- [ ] Create `middleware` folder
-- [ ] Create `models` folder
-- [ ] Create `config` folder
-- [ ] Create `db` folder
-- [ ] Split server logic into modules (routes, controllers, services, middleware)
+- [ ☑️ ] Create `controllers` folder
+- [ ☑️ ] Create `middleware` folder
+- [ ☑️ ] Create `models` folder
+- [ ☑️ ] Create `config` folder
+- [ ☑️ ] Create `db` folder
+- [ ☑️ ] Split server logic into modules (routes, controllers, services, middleware)
 
 ## 4. Node.js Module System
 
