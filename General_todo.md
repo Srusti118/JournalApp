@@ -14,12 +14,12 @@ Use this file to track progress topic by topic.
 
 ## 2. Route, Controller, Service Architecture
 
-- [ ] Understand route, controller, and service
-- [ ] Move route logic into controller files
-- [ ] Keep routes focused only on URL mapping
-- [ ] Keep controllers focused on request/response
-- [ ] Keep services focused on business logic
-- [ ] Understand model concept
+- [ ☑️ ] Understand route, controller, and service
+- [ ☑️ ] Move route logic into controller files
+- [ ☑️ ] Keep routes focused only on URL mapping
+- [ ☑️ ] Keep controllers focused on request/response
+- [ ☑️ ] Keep services focused on business logic
+- [ ☑️ ] Understand model concept
 
 ## 3. Project Structure
 
