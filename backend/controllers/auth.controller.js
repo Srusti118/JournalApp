@@ -1,4 +1,6 @@
 const authService = require('../services/auth.service')
+const oauthService = require('../services/oauth.service')
+const { config } = require('../config/constants')
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -149,3 +151,48 @@ exports.getMe = async (req, res, next) => {
     next(error)
   }
 }
+
+// Google OAuth initiate
+exports.googleAuth = (req, res) => {
+  if (!config.google.clientId || !config.google.clientSecret) {
+    return res.status(500).json({
+      success: false,
+      message: 'Google OAuth is not configured on the server. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env',
+      code: 'GOOGLE_AUTH_NOT_CONFIGURED',
+    })
+  }
+
+  const authUrl = oauthService.getGoogleAuthUrl()
+  res.redirect(authUrl)
+}
+
+// Google OAuth callback
+exports.googleCallback = async (req, res, next) => {
+  try {
+    const { code, error } = req.query
+
+    if (error) {
+      return res.redirect(`${config.clientUrl}/login?error=${encodeURIComponent(error)}`)
+    }
+
+    if (!code) {
+      return res.redirect(`${config.clientUrl}/login?error=no_code`)
+    }
+
+    const tokens = await oauthService.exchangeCodeForTokens(code)
+    const profile = await oauthService.getGoogleUserInfo(tokens.access_token)
+    const user = await oauthService.findOrCreateGoogleUser(profile)
+
+    const accessToken = generateAccessToken(user._id)
+    const refreshToken = await generateRefreshToken(user._id)
+    const csrfToken = generateCsrfToken()
+
+    res.cookie('refreshToken', refreshToken, getRefreshCookieOptions())
+    res.cookie('csrfToken', csrfToken, getCsrfCookieOptions())
+
+    res.redirect(`${config.clientUrl}/auth/callback?token=${accessToken}&csrf=${csrfToken}`)
+  } catch (err) {
+    const message = err.message || 'Google authentication failed'
+    res.redirect(`${config.clientUrl}/login?error=${encodeURIComponent(message)}`)
+  }
+}

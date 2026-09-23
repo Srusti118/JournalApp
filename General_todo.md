@@ -88,8 +88,13 @@ Use this file to track progress topic by topic.
 
 ## 12. Social Authentication (OAuth 2.0)
 
-- [ ] Learn OAuth 2.0 and OpenID Connect (OIDC) protocols
-- [ ] Understand Authorization Code flow
+- [ ☑️ ] Learn OAuth 2.0 and OpenID Connect (OIDC) protocols
+- [ ☑️ ] Understand Authorization Code flow
+- [ ☑️ ] Implement Google OAuth 2.0 initiation endpoint (`GET /api/auth/google`)
+- [ ☑️ ] Implement Google OAuth callback & token exchange (`GET /api/auth/google/callback`)
+- [ ☑️ ] Adapt User model for OAuth (optional password, googleId, avatar)
+- [ ☑️ ] Issue JWT + refresh/CSRF cookies on OAuth success
+- [ ☑️ ] Add "Continue with Google" button & frontend callback route (`/auth/callback`)
 
 ## 13. Validation
 

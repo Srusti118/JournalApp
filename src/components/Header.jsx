@@ -21,6 +21,19 @@ function Header({ onToggleTheme, user, onLogout }) {
         {user ? (
           <>
             <span className={`${styles.userInfo} ${dark ? styles.userInfoDark : ''}`}>
+              {user.avatar && (
+                <img
+                  src={user.avatar}
+                  alt={user.username}
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    verticalAlign: 'middle',
+                    marginRight: '6px',
+                  }}
+                />
+              )}
               Welcome, {user.username}
             </span>
             <button
