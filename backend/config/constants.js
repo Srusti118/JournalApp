@@ -25,12 +25,22 @@ const config = {
   },
 
   // CORS
-  corsOrigins: process.env.CORS_ORIGINS?.split(",") || [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:3000",
+  corsOrigins: process.env.CORS_ORIGINS?.split(',') || [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:3000',
   ],
-};
+
+  // Client URL (Frontend)
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+
+  // Google OAuth
+  google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    redirectUri: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5000/api/auth/google/callback',
+  },
+}
 
 // Validate required environment variables
 function validateEnv() {

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef, createContext, useContext } from "react";
-import { api, authApi } from "../services/api";
-import { buildUrl } from "../constants/api";
+import { api, authApi } from '../services/api'
 
 const AuthContext = createContext(null);
 
@@ -124,21 +123,24 @@ export function AuthProvider({ children }) {
   }, [updateTokens]);
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      setUser,
-      accessToken: accessTokenRef.current,
-      csrfToken,
-      loading,
-      login,
-      register,
-      logout,
-      updateTokens,
-      refreshToken: () => api.refreshAccessToken(),
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        accessToken: accessTokenRef.current,
+        csrfToken,
+        loading,
+        login,
+        register,
+        logout,
+        updateTokens,
+        handleAuthSuccess,
+        refreshToken: () => api.refreshAccessToken(),
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  );
+  )
 }
 
 export function useAuth() {

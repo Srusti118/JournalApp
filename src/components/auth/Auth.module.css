@@ -1,77 +1,215 @@
-.authContainer {
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 60vh;
-  padding: 2rem;
+  padding: 2rem 1rem;
 }
 
-.authBox {
-  background: var(--card-bg, #fff);
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.form {
+  background: #fff5f7;
+  border: 1px solid #ffc0cc;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(220, 80, 120, 0.08);
   width: 100%;
-  max-width: 400px;
-}
-
-.authBox h2 {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.authBox form {
+  max-width: 420px;
+  padding: 2.2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
+  transition: background 0.3s, border-color 0.3s;
 }
 
-.authBox input {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+:global(.dark) .form {
+  background: #3d1020;
+  border-color: #6b2a3a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.authBox input:focus {
+.title {
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #3d1a24;
+}
+
+:global(.dark) .title {
+  color: #f5d0dc;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #602535;
+}
+
+:global(.dark) .label {
+  color: #f5d0dc;
+}
+
+.input {
+  padding: 11px 14px;
+  border: 1px solid #ffc0cc;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
   outline: none;
-  border-color: #007bff;
+  background: #fff0f3;
+  color: #3d1a24;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.authBox button {
-  padding: 0.75rem;
-  background: #007bff;
-  color: white;
+:global(.dark) .input {
+  background: #2d0a15;
+  border-color: #6b2a3a;
+  color: #f5d0dc;
+}
+
+.input:focus {
+  border-color: #e8607a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 122, 0.15);
+}
+
+.inputError {
+  border-color: #e53e3e !important;
+}
+
+.button {
+  margin-top: 0.5rem;
+  padding: 12px;
+  background: #e8607a;
+  color: #fff;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 }
 
-.authBox button:hover:not(:disabled) {
-  background: #0056b3;
+.button:hover:not(:disabled) {
+  background: #d04060;
 }
 
-.authBox button:disabled {
+.button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 .error {
-  color: #dc3545;
-  background: #f8d7da;
-  padding: 0.5rem;
-  border-radius: 4px;
+  margin: 0;
+  padding: 10px 14px;
+  background: #fff0f0;
+  border: 1px solid #fed7d7;
+  color: #c53030;
+  border-radius: 8px;
+  font-size: 0.88rem;
   text-align: center;
 }
 
-.authBox p {
-  text-align: center;
-  margin-top: 1rem;
+:global(.dark) .error {
+  background: #4a151b;
+  border-color: #742a2a;
+  color: #feb2b2;
 }
 
-.authBox a {
-  color: #007bff;
-  text-decoration: none;
+.switchText {
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+  font-size: 0.88rem;
+  color: #718096;
+}
+
+:global(.dark) .switchText {
+  color: #a0aec0;
+}
+
+.link {
+  color: #e8607a;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: #d04060;
+}
+
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ffc0cc;
+}
+
+:global(.dark) .divider::before,
+:global(.dark) .divider::after {
+  border-bottom-color: #6b2a3a;
+}
+
+.divider span {
+  padding: 0 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a06070;
+  letter-spacing: 0.5px;
+}
+
+:global(.dark) .divider span {
+  color: #c08090;
+}
+
+/* ── Google OAuth Button ── */
+.googleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 16px;
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.googleButton:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+:global(.dark) .googleButton {
+  background: #2d0a15;
+  color: #f5d0dc;
+  border-color: #6b2a3a;
+}
+
+:global(.dark) .googleButton:hover {
+  background: #3d1020;
+  border-color: #8b3050;
+}
+
+.googleIcon {
+  flex-shrink: 0;
 }

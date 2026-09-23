@@ -1,48 +1,49 @@
-import Header from "./components/Header";
-import "./App.css";
-import { useEffect, useState } from "react";
-import { ThemeContext } from "./ThemeContext";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import { useAuth } from "./hooks/useAuth";
-import { useNotes } from "./hooks/useNotes";
+import Header from './components/Header'
+import './App.css'
+import { useEffect, useState } from 'react'
+import { ThemeContext } from './ThemeContext'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Home from './pages/Home'
+import About from './pages/About'
+import Login from './components/auth/Login'
+import Register from './components/auth/Register'
+import AuthCallback from './pages/AuthCallback'
+import { useAuth } from './hooks/useAuth'
+import { useNotes } from './hooks/useNotes'
 
 const App = () => {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    return saved || "light";
-  });
+    const saved = localStorage.getItem('theme')
+    return saved || 'light'
+  })
 
-  const { user, loading, login, register, logout } = useAuth();
+  const { user, loading, logout } = useAuth()
   const { entries, fetchNotes, addNote: addEntry, deleteNote: deleteEntry, loading: notesLoading } =
-    useNotes();
+    useNotes()
 
   // Save theme preference
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+    localStorage.setItem('theme', theme)
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
 
   // Fetch notes on mount if logged in
   useEffect(() => {
     if (user) {
-      fetchNotes();
+      fetchNotes()
     }
-  }, [user, fetchNotes]);
+  }, [user, fetchNotes])
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+  }
 
   if (loading) {
     return (
       <div className="loading-screen">
         <p>Loading...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -80,11 +81,12 @@ const App = () => {
               path="/register"
               element={!user ? <Register /> : <Navigate to="/" replace />}
             />
+            <Route path="/auth/callback" element={<AuthCallback />} />
           </Routes>
         </div>
       </div>
     </ThemeContext.Provider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
