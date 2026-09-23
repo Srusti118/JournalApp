@@ -98,11 +98,11 @@ Use this file to track progress topic by topic.
 
 ## 13. Validation
 
-- [ ] Learn schema validation
-- [ ] Use `express-validator`
-- [ ] Validate signup input
-- [ ] Validate login input
-- [ ] Return clean validation errors
+- [ ☑️ ] Learn schema validation
+- [ ☑️ ] Use `express-validator`
+- [ ☑️ ] Validate signup input
+- [ ☑️ ] Validate login input
+- [ ☑️ ] Return clean validation errors
 
 ## 14. API Documentation
 
