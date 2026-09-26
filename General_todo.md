@@ -111,12 +111,12 @@ Use this file to track progress topic by topic.
 
 ## 15. Security Basics
 
-- [ ] Never store plain passwords (bcrypt)
-- [ ] Validate all input (express-validator)
-- [ ] Learn CORS basics
-- [ ] Use cookie-parser
-- [ ] Avoid leaking internal errors (errorHandler middleware)
-- [ ] CSRF protection implemented
+- [ ☑️ ] Never store plain passwords (bcrypt)
+- [ ☑️ ] Validate all input (express-validator)
+- [ ☑️ ] Learn CORS basics
+- [ ☑️ ] Use cookie-parser
+- [ ☑️ ] Avoid leaking internal errors (errorHandler middleware)
+- [ ☑️ ] CSRF protection implemented
 
 ## 16. API Testing
 

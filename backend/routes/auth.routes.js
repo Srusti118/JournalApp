@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const authController = require('../controllers/auth.controller')
-const { protect } = require('../middleware/auth.middleware')
+const { protect, verifyCsrf } = require('../middleware/auth.middleware')
 const {
   registerValidation,
   loginValidation,
@@ -10,8 +10,8 @@ const {
 // Public routes
 router.post('/register', registerValidation, authController.register)
 router.post('/login', loginValidation, authController.login)
-router.post('/refresh-token', authController.refreshToken)
-router.post('/logout', authController.logout)
+router.post('/refresh-token', verifyCsrf, authController.refreshToken)
+router.post('/logout', verifyCsrf, authController.logout)
 
 // Google OAuth routes
 router.get('/google', authController.googleAuth)
