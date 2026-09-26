@@ -13,5 +13,5 @@ router.use(protect)
 router.get('/', noteController.getAllNotes)
 router.post('/', noteValidation, noteController.createNote)
 router.delete('/:id', paramValidation, noteController.deleteNote)
-
+router.put('/:id', paramValidation, noteValidation, noteController.updateNote)
 module.exports = router

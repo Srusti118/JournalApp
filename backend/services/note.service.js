@@ -26,8 +26,22 @@ const deleteNote = async (noteId, userId) => {
     return true
 }
 
+const updateNote = async (noteId, userId, title, body) => {
+    const note = await Note.findOne({ _id: noteId, user: userId })
+
+    if (!note) {
+        throw new AppError('Note not found', 404, 'NOTE_NOT_FOUND')
+    }
+
+    note.title = title
+    note.body = body
+    await note.save()
+    return note
+}
+
 module.exports = {
     getAllNotesForUser,
     createNote,
     deleteNote,
+    updateNote
 }

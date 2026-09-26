@@ -16,6 +16,12 @@ export function useAuthFetch() {
     return res;
   }, []);
 
+  // PUT request
+  const put = useCallback(async (endpoint, body) => {
+    const res = await api.put(buildUrl(endpoint), body);
+    return res;
+  }, []);
+
   // DELETE request
   const del = useCallback(async (endpoint) => {
     const res = await api.delete(buildUrl(endpoint));
@@ -29,7 +35,7 @@ export function useAuthFetch() {
   }, []);
 
   return useMemo(
-    () => ({ get, post, delete: del, request }),
-    [get, post, del, request]
+    () => ({ get, post, put, delete: del, request }),
+    [get, post, put, del, request]
   );
 }

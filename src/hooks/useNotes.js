@@ -72,6 +72,32 @@ export function useNotes() {
     [authFetch]
   );
 
+  // Update note
+  const updateNote = useCallback(
+    async (id, updatedFields) => {
+      setError(null);
+
+      try {
+        const res = await authFetch.put(`/notes/${id}`, updatedFields);
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Failed to update note");
+        }
+        const data = await res.json();
+        const payload = data.data || data;
+        const updatedDbNote = payload.note || payload;
+        setEntries((prev) =>
+          prev.map((entry) => (entry._id === id ? updatedDbNote : entry))
+        );
+        return updatedDbNote;
+      } catch (err) {
+        setError(err.message);
+        throw err;
+      }
+    },
+    [authFetch]
+  );
+
   return {
     entries,
     setEntries,
@@ -79,6 +105,7 @@ export function useNotes() {
     error,
     fetchNotes,
     addNote,
+    updateNote,
     deleteNote,
   };
 }

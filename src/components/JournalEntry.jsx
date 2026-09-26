@@ -2,12 +2,12 @@ import { useState, useContext } from 'react'
 import styles from './JournalEntry.module.css'
 import { ThemeContext } from '../ThemeContext'
 
-function JournalEntry({ _id, title, createdAt, body, onDelete }) {
+function JournalEntry({ _id, title, createdAt, body, onEdit, onDelete }) {
   const [count, setCount] = useState(0)
   const theme = useContext(ThemeContext)
   const dark = theme === 'dark'
 
-  const handleLike = () => setCount(prev => prev + 1)
+  const handleLike = () => setCount((prev) => prev + 1)
 
   // Format date from MongoDB timestamp
   const formattedDate = new Date(createdAt).toLocaleDateString()
@@ -26,6 +26,14 @@ function JournalEntry({ _id, title, createdAt, body, onDelete }) {
         </button>
         {count > 0 && (
           <span className={`${styles.liked} ${dark ? styles.likedDark : ''}`}>Liked!</span>
+        )}
+        {onEdit && (
+          <button
+            className={`${styles.editBtn} ${dark ? styles.editBtnDark : ''}`}
+            onClick={() => onEdit({ _id, title, body })}
+          >
+            Edit
+          </button>
         )}
         <button
           className={`${styles.deleteBtn} ${dark ? styles.deleteBtnDark : ''}`}

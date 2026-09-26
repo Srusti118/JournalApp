@@ -109,6 +109,13 @@ class ApiClient {
     });
   }
 
+  put(url, body) {
+    return this.request(url, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
+  }
+
   delete(url) {
     return this.request(url, { method: "DELETE" });
   }
@@ -214,6 +221,13 @@ export const notesApi = {
     const res = await api.post(buildUrl("/notes"), note);
     const data = await res.json();
     if (!res.ok) throw new Error("Failed to create note");
+    return data.data;
+  },
+
+  update: async (id, note) => {
+    const res = await api.put(buildUrl(`/notes/${id}`), note);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to update note");
     return data.data;
   },
 

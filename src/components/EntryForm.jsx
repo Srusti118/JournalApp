@@ -1,19 +1,33 @@
-import { useRef, useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
-function EntryForm({ onAddEntry }) {
-  const { register, handleSubmit, reset, formState: { errors }, setFocus } = useForm()
+function EntryForm({ onAddEntry, editingEntry, onUpdateEntry, onCancelEdit }) {
+  const { register, handleSubmit, reset, setValue, formState: { errors }, setFocus } = useForm()
 
   useEffect(() => {
-    setFocus("title")
-  }, [setFocus])
+    if (editingEntry) {
+      setValue("title", editingEntry.title)
+      setValue("body", editingEntry.body)
+      setFocus("title")
+    } else {
+      reset({ title: "", body: "" })
+      setFocus("title")
+    }
+  }, [editingEntry, setValue, setFocus, reset])
 
   const onSubmit = (data) => {
-    onAddEntry({
-      title: data.title,
-      body: data.body
-    })
-    reset()
+    if (editingEntry) {
+      onUpdateEntry(editingEntry._id, {
+        title: data.title,
+        body: data.body
+      })
+    } else {
+      onAddEntry({
+        title: data.title,
+        body: data.body
+      })
+      reset()
+    }
   }
 
   return (
@@ -32,7 +46,21 @@ function EntryForm({ onAddEntry }) {
       />
       {errors.body && <p style={{ color: '#e8607a', fontSize: '0.82rem', margin: 0 }}>{errors.body.message}</p>}
 
-      <button className="form-button" type="submit">Submit</button>
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <button className="form-button" type="submit">
+          {editingEntry ? "Update Entry" : "Submit"}
+        </button>
+        {editingEntry && (
+          <button
+            type="button"
+            className="form-button"
+            style={{ background: '#888' }}
+            onClick={onCancelEdit}
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   )
 }

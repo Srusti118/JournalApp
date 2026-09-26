@@ -18,8 +18,14 @@ const App = () => {
   })
 
   const { user, loading, logout } = useAuth()
-  const { entries, fetchNotes, addNote: addEntry, deleteNote: deleteEntry, loading: notesLoading } =
-    useNotes()
+  const {
+    entries,
+    fetchNotes,
+    addNote: addEntry,
+    updateNote: updateEntry,
+    deleteNote: deleteEntry,
+    loading: notesLoading,
+  } = useNotes()
 
   // Save theme preference
   useEffect(() => {
@@ -64,6 +70,7 @@ const App = () => {
                   <Home
                     entries={entries}
                     addEntry={addEntry}
+                    updateEntry={updateEntry}
                     deleteEntry={deleteEntry}
                     loading={notesLoading}
                   />

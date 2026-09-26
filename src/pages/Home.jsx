@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import EntryForm from "../components/EntryForm";
 import JournalEntry from "../components/JournalEntry";
 
-const Home = ({ entries, addEntry, deleteEntry }) => {
+const Home = ({ entries, addEntry, updateEntry, deleteEntry }) => {
+    const [editingEntry, setEditingEntry] = useState(null);
     const [quote, setQuote] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -33,6 +34,16 @@ const Home = ({ entries, addEntry, deleteEntry }) => {
         fetchQuote();
     }, []);
 
+    const handleStartEdit = (entry) => {
+        setEditingEntry(entry);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleUpdate = async (id, data) => {
+        await updateEntry(id, data);
+        setEditingEntry(null);
+    };
+
     return (
         <>
             <div className="inspiration-section">
@@ -47,12 +58,18 @@ const Home = ({ entries, addEntry, deleteEntry }) => {
                 )}
             </div>
 
-            <EntryForm onAddEntry={addEntry} />
+            <EntryForm
+                onAddEntry={addEntry}
+                editingEntry={editingEntry}
+                onUpdateEntry={handleUpdate}
+                onCancelEdit={() => setEditingEntry(null)}
+            />
 
             {entries.map((entry) => (
                 <JournalEntry
                     key={entry._id}
                     {...entry}
+                    onEdit={handleStartEdit}
                     onDelete={deleteEntry}
                 />
             ))}

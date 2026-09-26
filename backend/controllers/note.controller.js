@@ -45,3 +45,21 @@ exports.deleteNote = async (req, res, next) => {
     next(error)
   }
 }
+
+//update
+exports.updateNote = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const { title, body } = req.body
+
+    const note = await noteService.updateNote(id, req.user._id, title, body)
+
+    res.json({
+      success: true,
+      data: { note },
+    })
+
+  } catch (error) {
+    next(error)
+  }
+}
