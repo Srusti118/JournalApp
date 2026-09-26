@@ -24,11 +24,15 @@ const config = {
     path: "/",
   },
 
+  // Swagger
+  enableSwagger: process.env.ENABLE_SWAGGER === 'true' || (process.env.NODE_ENV || 'development') !== 'production',
+
   // CORS
   corsOrigins: process.env.CORS_ORIGINS?.split(',') || [
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:3000',
+    `http://localhost:${parseInt(process.env.PORT, 10) || 5000}`,
   ],
 
   // Client URL (Frontend)

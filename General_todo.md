@@ -106,8 +106,8 @@ Use this file to track progress topic by topic.
 
 ## 14. API Documentation
 
-- [ ] Document auth endpoints
-- [ ] Document note endpoints
+- [ ☑️ ] Document auth endpoints
+- [ ☑️ ] Document note endpoints
 
 ## 15. Security Basics
 
