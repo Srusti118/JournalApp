@@ -120,14 +120,14 @@ Use this file to track progress topic by topic.
 
 ## 16. API Testing
 
-- [ ] Test APIs with Postman or Thunder Client
-- [ ] Test signup
-- [ ] Test duplicate signup
-- [ ] Test login
-- [ ] Test wrong login
-- [ ] Test create note
-- [ ] Test update note
-- [ ] Test delete note
+- [ ☑️ ] Test APIs with Postman or Thunder Client
+- [ ☑️ ] Test signup
+- [ ☑️ ] Test duplicate signup
+- [ ☑️ ] Test login
+- [ ☑️ ] Test wrong login
+- [ ☑️ ] Test create note
+- [ ☑️ ] Test update note
+- [ ☑️ ] Test delete note
 
 ## 17. Logging Basics
 
