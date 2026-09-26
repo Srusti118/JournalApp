@@ -25,30 +25,6 @@ app.use(
 app.use(express.json())
 app.use(cookieParser())
 
-/**
- * @openapi
- * /health:
- *   get:
- *     summary: Server health check
- *     description: Returns server operational status and ISO timestamp.
- *     tags:
- *       - Health
- *     responses:
- *       200:
- *         description: Server is online and functioning
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: ok
- *                 timestamp:
- *                   type: string
- *                   format: date-time
- *                   example: 2026-09-26T08:15:00.000Z
- */
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })

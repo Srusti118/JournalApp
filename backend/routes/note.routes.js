@@ -1,22 +1,17 @@
-const express = require("express");
-const router = express.Router();
-const noteController = require("../controllers/note.controller");
-const { protectWithCsrf } = require("../middleware/auth.middleware");
+const express = require('express')
+const router = express.Router()
+const noteController = require('../controllers/note.controller')
+const { protect } = require('../middleware/auth.middleware')
 const {
   noteValidation,
   paramValidation,
-} = require("../middleware/validation");
+} = require('../middleware/validation')
 
-// All routes require auth + CSRF protection
-router.use(protectWithCsrf);
+// All routes require JWT Bearer authentication
+router.use(protect)
 
-// GET /api/notes - Get all notes
-router.get("/", noteController.getAllNotes);
+router.get('/', noteController.getAllNotes)
+router.post('/', noteValidation, noteController.createNote)
+router.delete('/:id', paramValidation, noteController.deleteNote)
 
-// POST /api/notes - Create a new note
-router.post("/", noteValidation, noteController.createNote);
-
-// DELETE /api/notes/:id - Delete a note
-router.delete("/:id", paramValidation, noteController.deleteNote);
-
-module.exports = router;
+module.exports = router

@@ -1,0 +1,584 @@
+openapi: 3.0.3
+info:
+  title: Journal App API Documentation
+  version: 1.0.0
+  description: >-
+    Production-grade REST API documentation for the Journal App. Features JWT Bearer authentication for data endpoints, HttpOnly cookie-based refresh token rotation with CSRF protection, and journal entry management.
+
+servers:
+  - url: http://localhost:5000
+    description: Local Development Server
+
+tags:
+  - name: Auth
+    description: User registration, login, token refresh, and OAuth flows
+  - name: Notes
+    description: User journal entry CRUD operations (Bearer JWT protected)
+  - name: Health
+    description: Server status and health monitoring
+
+paths:
+  /health:
+    get:
+      summary: Server health check
+      description: Returns server operational status and ISO timestamp.
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Server is online and functioning
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: '2026-09-26T08:15:00.000Z'
+
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      description: Creates a new user account with email, username, and password. Sets HttpOnly refreshToken and csrfToken cookies.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInput'
+      responses:
+        '201':
+          description: User registered successfully
+          headers:
+            Set-Cookie:
+              description: Sets HttpOnly refreshToken and csrfToken cookies
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSuccessResponse'
+        '400':
+          description: Validation error or duplicate email/username
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationErrorResponse'
+                  - $ref: '#/components/schemas/StandardErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/auth/login:
+    post:
+      summary: Authenticate user & issue tokens
+      description: Authenticates user credentials. Returns in-memory JWT access token and sets HttpOnly refreshToken and csrfToken cookies.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Login successful
+          headers:
+            Set-Cookie:
+              description: Sets HttpOnly refreshToken and csrfToken cookies
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/auth/refresh-token:
+    post:
+      summary: Rotate refresh token & issue new access token
+      description: Rotates the refresh token (deletes old token from database and creates a new one). Issues a new 15-minute access token. Requires valid refreshToken cookie.
+      tags:
+        - Auth
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Token refreshed successfully
+          headers:
+            Set-Cookie:
+              description: Sets rotated refreshToken and csrfToken cookies
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenSuccessResponse'
+        '401':
+          description: Refresh token missing from request cookies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+        '403':
+          description: Invalid or expired refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/auth/logout:
+    post:
+      summary: Logout user & invalidate session
+      description: Deletes the active refresh token from the database and clears authentication cookies.
+      tags:
+        - Auth
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Logged out successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/auth/google:
+    get:
+      summary: Initiate Google OAuth flow
+      description: Redirects user to Google OAuth 2.0 consent screen for third-party sign in.
+      tags:
+        - Auth
+      responses:
+        '302':
+          description: Redirect to Google OAuth consent page
+        '500':
+          description: Google OAuth credentials not configured on server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+
+  /api/auth/google/callback:
+    get:
+      summary: Google OAuth callback handler
+      description: Receives the authorization code from Google, exchanges it for tokens, creates/links user, sets cookies, and redirects to frontend.
+      tags:
+        - Auth
+      parameters:
+        - name: code
+          in: query
+          description: Google OAuth authorization code
+          schema:
+            type: string
+        - name: error
+          in: query
+          description: Error message returned by Google OAuth
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirects to frontend with tokens on success or error message on failure
+
+  /api/auth/me:
+    get:
+      summary: Get current authenticated user profile
+      description: Returns the user profile details for the currently authenticated bearer token holder.
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user profile data retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSuccessResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/notes:
+    get:
+      summary: Retrieve all journal notes for authenticated user
+      description: Returns an array of journal notes created by the currently authenticated user, sorted by creation date descending.
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of user notes retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotesListSuccessResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      summary: Create a new journal note
+      description: Creates a new journal entry for the currently authenticated user.
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNoteInput'
+      responses:
+        '201':
+          description: Journal note created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteSuccessResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/notes/{id}:
+    delete:
+      summary: Delete a journal note by ID
+      description: Deletes a specific note belonging to the currently authenticated user.
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/NoteIdParam'
+      responses:
+        '200':
+          description: Note deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid ID format (not a valid MongoDB ObjectId)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Note not found or not owned by user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Provide your JWT access token in the format: Bearer <token>'
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: refreshToken
+      description: 'HttpOnly cookie containing the 7-day refresh token for session rotation'
+    csrfHeader:
+      type: apiKey
+      in: header
+      name: x-csrf-token
+      description: 'CSRF token required for cookie-authenticated state mutations'
+
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: '65f1234567890abcdef12345'
+        username:
+          type: string
+          example: 'johndoe'
+        email:
+          type: string
+          format: email
+          example: 'john@example.com'
+        avatar:
+          type: string
+          example: ''
+        googleId:
+          type: string
+          example: '109876543210987654321'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Note:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: '65f9876543210abcdef54321'
+        title:
+          type: string
+          example: 'Reflections on Clean Architecture'
+        body:
+          type: string
+          example: 'Separating Bearer auth from cookie CSRF makes the API robust and standard.'
+        user:
+          type: string
+          example: '65f1234567890abcdef12345'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    RegisterInput:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 30
+          pattern: '^[a-zA-Z0-9_]+$'
+          example: 'johndoe'
+        email:
+          type: string
+          format: email
+          example: 'john@example.com'
+        password:
+          type: string
+          minLength: 6
+          example: 'secretPassword123'
+
+    LoginInput:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: 'john@example.com'
+        password:
+          type: string
+          example: 'secretPassword123'
+
+    CreateNoteInput:
+      type: object
+      required:
+        - title
+        - body
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: 'Morning Reflection'
+        body:
+          type: string
+          minLength: 10
+          example: 'Today I planned the complete Swagger documentation architecture.'
+
+    AuthSuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            accessToken:
+              type: string
+              example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+            csrfToken:
+              type: string
+              example: '4a6b2c8d1e0f9a8b7c6d5e4f3a2b1c0d'
+
+    RefreshTokenSuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            accessToken:
+              type: string
+              example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+            csrfToken:
+              type: string
+              example: '4a6b2c8d1e0f9a8b7c6d5e4f3a2b1c0d'
+
+    UserSuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+
+    NoteSuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            note:
+              $ref: '#/components/schemas/Note'
+
+    NotesListSuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            notes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Note'
+
+    MessageResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'Operation completed successfully'
+
+    StandardErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: 'Error description message'
+        code:
+          type: string
+          example: 'ERROR_CODE'
+
+    ValidationErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: 'Validation failed'
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: 'email'
+              message:
+                type: string
+                example: 'Invalid email address'
+
+  responses:
+    ValidationError:
+      description: 'Validation failed due to invalid request format or input'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorResponse'
+
+    UnauthorizedError:
+      description: 'Authentication failed (missing, expired, or invalid token)'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+
+    ForbiddenError:
+      description: 'Forbidden (missing or invalid refresh token / CSRF token)'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+
+    NotFoundError:
+      description: 'Requested resource was not found'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+
+    ServerError:
+      description: 'Internal server error occurred'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+
+  parameters:
+    NoteIdParam:
+      name: id
+      in: path
+      required: true
+      description: '24-character hexadecimal MongoDB ObjectId of the note'
+      schema:
+        type: string
+        pattern: '^[0-9a-fA-F]{24}$'
+        example: '65f9876543210abcdef54321'
