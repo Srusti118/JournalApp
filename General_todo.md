@@ -131,9 +131,9 @@ Use this file to track progress topic by topic.
 
 ## 17. Logging Basics
 
-- [ ] Learn `console.log()`
-- [ ] Learn `console.error()`
-- [ ] Understand what to log during development
+- [ ☑️ ] Learn `console.log()`
+- [ ☑️ ] Learn `console.error()`
+- [ ☑️ ] Understand what to log during development
 
 ## 18. Deployment
 
