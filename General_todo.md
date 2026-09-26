@@ -135,18 +135,21 @@ Use this file to track progress topic by topic.
 - [ ☑️ ] Learn `console.error()`
 - [ ☑️ ] Understand what to log during development
 
-## 18. Deployment
+## 18. Docker
+
+- [ ☑️ ] Learn Docker basics (Images, Containers, Volumes, and Networking)
+- [ ☑️ ] Understand the difference between a `Dockerfile` and `docker-compose.yml`
+- [ ☑️ ] Create a `Dockerfile` for the Node.js backend
+- [ ☑️ ] Create a `Dockerfile` for the React frontend
+- [ ☑️ ] Write a `docker-compose.yml` to spin up the frontend, backend, and MongoDB database together locally
+
+## 19. Deployment
 
 - [ ] Learn backend deployment basics
 - [ ] Deploy backend
 - [ ] Use hosted database
 - [ ] Set production environment variables
 - [ ] Connect frontend to deployed backend
-
-## 19. PWA (Progressive Web App)
-
-- [ ] Refer to the detailed checklist in [PWA_todo.md](./PWA_todo.md) to implement offline capabilities, background sync, and install experience.
-
 
 ## 20. Better-Auth Library
 
@@ -158,11 +161,6 @@ Use this file to track progress topic by topic.
 - [ ] Refactor frontend to use standard email-based login, username signup, and Google social login via the client SDK
 - [ ] Integrate `authClient.useSession()` React hooks to replace custom local storage session caching and polling
 
+## 22. PWA (Progressive Web App)
 
-## 21. Docker
-
-- [ ] Learn Docker basics (Images, Containers, Volumes, and Networking)
-- [ ] Understand the difference between a `Dockerfile` and `docker-compose.yml`
-- [ ] Create a `Dockerfile` for the Node.js backend
-- [ ] Create a `Dockerfile` for the React frontend
-- [ ] Write a `docker-compose.yml` to spin up the frontend, backend, and MongoDB database together locally
+- [ ] Refer to the detailed checklist in [PWA_todo.md](./PWA_todo.md) to implement offline capabilities, background sync, and install experience.
