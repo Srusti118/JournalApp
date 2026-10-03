@@ -1,141 +1,71 @@
-import { useState, useEffect, useCallback, useRef, createContext, useContext } from "react";
-import { api, authApi } from '../services/api'
+import { createContext, useContext, useCallback, useMemo } from 'react'
+import { authClient } from '../services/authClient.js'
 
-const AuthContext = createContext(null);
+const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem("user");
-    return saved ? JSON.parse(saved) : null;
-  });
+  const { data: session, isPending, error } = authClient.useSession()
 
-  const [loading, setLoading] = useState(true);
-  const accessTokenRef = useRef(null);
-  const [csrfToken, setCsrfToken] = useState(() => {
-    const token = localStorage.getItem("csrfToken");
-    if (token === "undefined" || token === "null") {
-      localStorage.removeItem("csrfToken");
-      return null;
+  // Format user object for consistent consumption across the app
+  const user = useMemo(() => {
+    if (!session?.user) return null
+    return {
+      ...session.user,
+      _id: session.user.id,
+      username: session.user.username || session.user.name || session.user.email.split('@')[0],
+      avatar: session.user.image || session.user.avatar || '',
     }
-    return token;
-  });
+  }, [session])
 
-  // Update access token without triggering re-render
-  const setAccessToken = useCallback((token) => {
-    accessTokenRef.current = token;
-  }, []);
+  // Login with Better Auth
+  const login = useCallback(async ({ email, password }) => {
+    const res = await authClient.signIn.email({
+      email,
+      password,
+    })
 
-  // Update tokens from server response
-  const updateTokens = useCallback(
-    (accessToken, newCsrfToken) => {
-      setAccessToken(accessToken);
-      api.setTokens(accessToken, newCsrfToken);
+    if (res?.error) {
+      const err = new Error(res.error.message || 'Login failed')
+      err.code = res.error.code
+      throw err
+    }
 
-      if (newCsrfToken) {
-        setCsrfToken(newCsrfToken);
-        localStorage.setItem("csrfToken", newCsrfToken);
-      }
-    },
-    [setAccessToken]
-  );
+    return res?.data?.user
+  }, [])
 
-  // Handle successful auth (login/register)
-  const handleAuthSuccess = useCallback(
-    (data) => {
-      const { user: userData, accessToken, csrfToken: newCsrfToken } = data;
+  // Register with Better Auth
+  const register = useCallback(async ({ username, email, password }) => {
+    const res = await authClient.signUp.email({
+      email,
+      password,
+      name: username,
+      username,
+    })
 
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
-      updateTokens(accessToken, newCsrfToken);
+    if (res?.error) {
+      const err = new Error(res.error.message || 'Registration failed')
+      err.code = res.error.code
+      throw err
+    }
 
-      return userData;
-    },
-    [updateTokens]
-  );
+    return res?.data?.user
+  }, [])
 
-  // Login
-  const login = useCallback(
-    async (credentials) => {
-      const data = await authApi.login(credentials);
-      return handleAuthSuccess(data);
-    },
-    [handleAuthSuccess]
-  );
-
-  // Register
-  const register = useCallback(
-    async (userData) => {
-      const data = await authApi.register(userData);
-      return handleAuthSuccess(data);
-    },
-    [handleAuthSuccess]
-  );
-
-  // Logout
+  // Logout with Better Auth
   const logout = useCallback(async () => {
-    try {
-      await authApi.logout();
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("csrfToken");
-    api.clearTokens();
-    setUser(null);
-    setAccessToken(null);
-    setCsrfToken(null);
-  }, [setAccessToken]);
-
-  const initialized = useRef(false);
-
-  // Refresh token on mount
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-
-    const initAuth = async () => {
-      // If we don't have a user in localStorage, no need to refresh tokens
-      if (!localStorage.getItem("user")) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const newToken = await api.refreshAccessToken();
-        if (!newToken) {
-          logout();
-        }
-      } catch (error) {
-        console.error("Auth init error:", error);
-        logout();
-      }
-
-      setLoading(false);
-    };
-
-    initAuth();
-  }, [logout]);
-
-  // Set up token refresh callback
-  useEffect(() => {
-    api.onTokenRefresh = updateTokens;
-  }, [updateTokens]);
+    await authClient.signOut()
+  }, [])
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        setUser,
-        accessToken: accessTokenRef.current,
-        csrfToken,
-        loading,
+        loading: isPending,
+        error,
         login,
         register,
         logout,
-        updateTokens,
-        handleAuthSuccess,
-        refreshToken: () => api.refreshAccessToken(),
+        authClient,
       }}
     >
       {children}
@@ -144,5 +74,7 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  return useContext(AuthContext)
 }
+
+export default useAuth

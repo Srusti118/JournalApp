@@ -1,28 +1,29 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 const noteSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
+      required: [true, 'Title is required'],
       trim: true,
     },
     body: {
       type: String,
-      required: [true, "Body is required"],
-      minLength: [10, "Entry must be at least 10 characters"],
+      required: [true, 'Body is required'],
+      minLength: [10, 'Entry must be at least 10 characters'],
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
   },
   {
     timestamps: true, // automatically adds createdAt and updatedAt
   }
-);
+)
 
-const Note = mongoose.model("Note", noteSchema);
+const Note = mongoose.model('Note', noteSchema)
 
-module.exports = Note;
+export { Note }
+export default Note

@@ -1,7 +1,7 @@
-const authService = require('../services/auth.service')
-const oauthService = require('../services/oauth.service')
-const { config } = require('../config/constants')
-const {
+import authService from '../services/auth.service.js'
+import oauthService from '../services/oauth.service.js'
+import { config } from '../config/constants.js'
+import {
   generateAccessToken,
   generateRefreshToken,
   generateCsrfToken,
@@ -9,11 +9,11 @@ const {
   deleteRefreshToken,
   getRefreshCookieOptions,
   getCsrfCookieOptions,
-} = require('../services/token.service')
-const { AppError } = require('../middleware/errorHandler')
+} from '../services/token.service.js'
+import { AppError } from '../middleware/errorHandler.js'
 
 // Register new user
-exports.register = async (req, res, next) => {
+export const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body
 
@@ -44,7 +44,7 @@ exports.register = async (req, res, next) => {
 }
 
 // Login user
-exports.login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body
 
@@ -75,7 +75,7 @@ exports.login = async (req, res, next) => {
 }
 
 // Refresh access token
-exports.refreshToken = async (req, res, next) => {
+export const refreshToken = async (req, res, next) => {
   try {
     const refreshToken = req.cookies?.refreshToken
 
@@ -117,7 +117,7 @@ exports.refreshToken = async (req, res, next) => {
 }
 
 // Logout user
-exports.logout = async (req, res, next) => {
+export const logout = async (req, res, next) => {
   try {
     const refreshToken = req.cookies?.refreshToken
 
@@ -139,7 +139,7 @@ exports.logout = async (req, res, next) => {
 }
 
 // Get current user
-exports.getMe = async (req, res, next) => {
+export const getMe = async (req, res, next) => {
   try {
     const user = await authService.getUserById(req.user._id)
 
@@ -153,7 +153,7 @@ exports.getMe = async (req, res, next) => {
 }
 
 // Google OAuth initiate
-exports.googleAuth = (req, res) => {
+export const googleAuth = (req, res) => {
   if (!config.google.clientId || !config.google.clientSecret) {
     return res.status(500).json({
       success: false,
@@ -167,7 +167,7 @@ exports.googleAuth = (req, res) => {
 }
 
 // Google OAuth callback
-exports.googleCallback = async (req, res, next) => {
+export const googleCallback = async (req, res, next) => {
   try {
     const { code, error } = req.query
 
@@ -195,4 +195,14 @@ exports.googleCallback = async (req, res, next) => {
     const message = err.message || 'Google authentication failed'
     res.redirect(`${config.clientUrl}/login?error=${encodeURIComponent(message)}`)
   }
+}
+
+export default {
+  register,
+  login,
+  refreshToken,
+  logout,
+  getMe,
+  googleAuth,
+  googleCallback,
 }

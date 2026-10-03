@@ -1,8 +1,12 @@
-const fs = require('fs')
-const path = require('path')
-const YAML = require('yaml')
-const swaggerUi = require('swagger-ui-express')
-const { config } = require('./constants')
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import YAML from 'yaml'
+import swaggerUi from 'swagger-ui-express'
+import { config } from './constants.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Load OpenAPI specification from YAML
 const openApiPath = path.resolve(__dirname, '../docs/openapi.yaml')
@@ -27,7 +31,7 @@ const swaggerUiOptions = {
   },
 }
 
-module.exports = {
+export {
   swaggerSpec,
   swaggerUi,
   swaggerUiOptions,

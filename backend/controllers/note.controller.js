@@ -1,7 +1,7 @@
-const noteService = require('../services/note.service')
+import noteService from '../services/note.service.js'
 
 // Get all notes for user
-exports.getAllNotes = async (req, res, next) => {
+export const getAllNotes = async (req, res, next) => {
   try {
     const notes = await noteService.getAllNotesForUser(req.user._id)
 
@@ -15,7 +15,7 @@ exports.getAllNotes = async (req, res, next) => {
 }
 
 // Create note
-exports.createNote = async (req, res, next) => {
+export const createNote = async (req, res, next) => {
   try {
     const { title, body } = req.body
 
@@ -31,7 +31,7 @@ exports.createNote = async (req, res, next) => {
 }
 
 // Delete note
-exports.deleteNote = async (req, res, next) => {
+export const deleteNote = async (req, res, next) => {
   try {
     const { id } = req.params
 
@@ -46,8 +46,8 @@ exports.deleteNote = async (req, res, next) => {
   }
 }
 
-//update
-exports.updateNote = async (req, res, next) => {
+// Update note
+export const updateNote = async (req, res, next) => {
   try {
     const { id } = req.params
     const { title, body } = req.body
@@ -58,8 +58,14 @@ exports.updateNote = async (req, res, next) => {
       success: true,
       data: { note },
     })
-
   } catch (error) {
     next(error)
   }
+}
+
+export default {
+  getAllNotes,
+  createNote,
+  deleteNote,
+  updateNote,
 }

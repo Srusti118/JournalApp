@@ -58,4 +58,4 @@ function validateEnv() {
   return config;
 }
 
-module.exports = { config, validateEnv };
+export { config, validateEnv }

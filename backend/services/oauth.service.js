@@ -1,9 +1,9 @@
-const { config } = require('../config/constants')
-const User = require('../models/user.model')
-const { AppError } = require('../middleware/errorHandler')
+import { config } from '../config/constants.js'
+import { User } from '../models/user.model.js'
+import { AppError } from '../middleware/errorHandler.js'
 
 // Generate Google OAuth consent URL
-const getGoogleAuthUrl = () => {
+export const getGoogleAuthUrl = () => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth'
   const options = {
     redirect_uri: config.google.redirectUri,
@@ -22,7 +22,7 @@ const getGoogleAuthUrl = () => {
 }
 
 // Exchange authorization code for Google access token
-const exchangeCodeForTokens = async (code) => {
+export const exchangeCodeForTokens = async (code) => {
   const url = 'https://oauth2.googleapis.com/token'
   const values = {
     code,
@@ -54,7 +54,7 @@ const exchangeCodeForTokens = async (code) => {
 }
 
 // Fetch user profile from Google using access token
-const getGoogleUserInfo = async (accessToken) => {
+export const getGoogleUserInfo = async (accessToken) => {
   const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -75,7 +75,7 @@ const getGoogleUserInfo = async (accessToken) => {
 }
 
 // Find existing user by googleId or email, or create a new user record
-const findOrCreateGoogleUser = async (profile) => {
+export const findOrCreateGoogleUser = async (profile) => {
   const { sub: googleId, email, name, picture: avatar } = profile
 
   if (!email) {
@@ -130,7 +130,7 @@ const findOrCreateGoogleUser = async (profile) => {
   return user
 }
 
-module.exports = {
+export default {
   getGoogleAuthUrl,
   exchangeCodeForTokens,
   getGoogleUserInfo,

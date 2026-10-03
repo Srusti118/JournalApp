@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import styles from './Auth.module.css'
 import { buildUrl, endpoints } from '../../constants/api'
+import { authClient } from '../../services/authClient.js'
 
 export default function AuthForm({ type, onAuth }) {
   const navigate = useNavigate()
@@ -44,8 +45,15 @@ export default function AuthForm({ type, onAuth }) {
     }
   }
 
-  const handleGoogleLogin = () => {
-    window.location.href = buildUrl(endpoints.auth.google)
+  const handleGoogleLogin = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: 'google',
+        callbackURL: window.location.origin,
+      })
+    } catch (err) {
+      setError(err.message || 'Google login failed')
+    }
   }
 
   const inputClassName = `${styles.input} ${error ? styles.inputError : ''}`

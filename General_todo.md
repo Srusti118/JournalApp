@@ -153,13 +153,13 @@ Use this file to track progress topic by topic.
 
 ## 20. Better-Auth Library
 
-- [ ] Convert Express backend to ES Modules to natively support Better Auth imports
-- [ ] Configure Better Auth server instance with MongoDB adapter
-- [ ] Replace manual JWT generation, token verification, and cookie handling with Better Auth automated sessions
-- [ ] Replace manual bcrypt hashing & verification with Better Auth's built-in secure credentials system
-- [ ] Remove custom endpoints for login, signup, logout, and raw Google OAuth redirects, routing all through the catch-all router
-- [ ] Refactor frontend to use standard email-based login, username signup, and Google social login via the client SDK
-- [ ] Integrate `authClient.useSession()` React hooks to replace custom local storage session caching and polling
+- [ ☑️ ] Convert Express backend to ES Modules to natively support Better Auth imports
+- [ ☑️ ] Configure Better Auth server instance with MongoDB adapter
+- [ ☑️ ] Replace manual JWT generation, token verification, and cookie handling with Better Auth automated sessions
+- [ ☑️ ] Replace manual bcrypt hashing & verification with Better Auth's built-in secure credentials system
+- [ ☑️ ] Remove custom endpoints for login, signup, logout, and raw Google OAuth redirects, routing all through the catch-all router
+- [ ☑️ ] Refactor frontend to use standard email-based login, username signup, and Google social login via the client SDK
+- [ ☑️ ] Integrate `authClient.useSession()` React hooks to replace custom local storage session caching and polling
 
 ## 22. PWA (Progressive Web App)
 

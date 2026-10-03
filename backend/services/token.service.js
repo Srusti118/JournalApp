@@ -1,72 +1,72 @@
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const RefreshToken = require("../models/refreshToken.model");
-const { config } = require("../config/constants");
+import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
+import { RefreshToken } from '../models/refreshToken.model.js'
+import { config } from '../config/constants.js'
 
 // Generate access token (JWT)
-function generateAccessToken(userId) {
+export const generateAccessToken = (userId) => {
   return jwt.sign({ userId }, config.jwtSecret, {
     algorithm: config.jwtAlgorithm,
     expiresIn: config.accessTokenExpiry,
-  });
+  })
 }
 
 // Generate refresh token (stored in DB)
-async function generateRefreshToken(userId) {
-  const token = crypto.randomBytes(64).toString("hex");
-  const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + config.refreshTokenExpiryDays);
+export const generateRefreshToken = async (userId) => {
+  const token = crypto.randomBytes(64).toString('hex')
+  const expiresAt = new Date()
+  expiresAt.setDate(expiresAt.getDate() + config.refreshTokenExpiryDays)
 
   await RefreshToken.create({
     token,
     user: userId,
     expiresAt,
-  });
+  })
 
-  return token;
+  return token
 }
 
 // Generate CSRF token
-function generateCsrfToken() {
-  return crypto.randomBytes(32).toString("hex");
+export const generateCsrfToken = () => {
+  return crypto.randomBytes(32).toString('hex')
 }
 
 // Verify access token
-function verifyAccessToken(token) {
+export const verifyAccessToken = (token) => {
   return jwt.verify(token, config.jwtSecret, {
     algorithms: [config.jwtAlgorithm],
-  });
+  })
 }
 
 // Verify refresh token exists in DB
-async function verifyRefreshToken(token) {
-  const storedToken = await RefreshToken.findOne({ token });
-  return storedToken;
+export const verifyRefreshToken = async (token) => {
+  const storedToken = await RefreshToken.findOne({ token })
+  return storedToken
 }
 
 // Delete refresh token
-async function deleteRefreshToken(token) {
-  return RefreshToken.deleteOne({ token });
+export const deleteRefreshToken = async (token) => {
+  return RefreshToken.deleteOne({ token })
 }
 
 // Get cookie options for refresh token
-function getRefreshCookieOptions() {
+export const getRefreshCookieOptions = () => {
   return {
     ...config.cookieOptions,
     maxAge: config.refreshTokenExpiryDays * 24 * 60 * 60 * 1000,
-  };
+  }
 }
 
 // Get cookie options for CSRF token (not httpOnly, so JS can read it)
-function getCsrfCookieOptions() {
+export const getCsrfCookieOptions = () => {
   return {
     ...config.cookieOptions,
     httpOnly: false,
     maxAge: config.csrfTokenExpiryDays * 24 * 60 * 60 * 1000,
-  };
+  }
 }
 
-module.exports = {
+export default {
   generateAccessToken,
   generateRefreshToken,
   generateCsrfToken,
@@ -75,4 +75,4 @@ module.exports = {
   deleteRefreshToken,
   getRefreshCookieOptions,
   getCsrfCookieOptions,
-};
+}

@@ -1,11 +1,12 @@
-const express = require('express')
-const router = express.Router()
-const authController = require('../controllers/auth.controller')
-const { protect, verifyCsrf } = require('../middleware/auth.middleware')
-const {
+import express from 'express'
+import authController from '../controllers/auth.controller.js'
+import { protect, verifyCsrf } from '../middleware/auth.middleware.js'
+import {
   registerValidation,
   loginValidation,
-} = require('../middleware/validation')
+} from '../middleware/validation.js'
+
+const router = express.Router()
 
 // Public routes
 router.post('/register', registerValidation, authController.register)
@@ -20,5 +21,6 @@ router.get('/google/callback', authController.googleCallback)
 // Protected routes
 router.get('/me', protect, authController.getMe)
 
-module.exports = router
+export { router as authRouter }
+export default router
 

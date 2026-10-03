@@ -1,52 +1,63 @@
-const { verifyAccessToken } = require("../services/token.service");
-const User = require("../models/user.model");
-const { AppError } = require("./errorHandler");
+import { fromNodeHeaders } from 'better-auth/node'   //bridges the node headers to web standard
+import { auth } from '../config/auth.js'
+import { verifyAccessToken } from '../services/token.service.js'
+import { User } from '../models/user.model.js'
+import { AppError } from './errorHandler.js'
 
 // CSRF protection middleware
-const verifyCsrf = (req, res, next) => {
-  const csrfTokenFromCookie = req.cookies?.csrfToken;
-  const csrfTokenFromHeader = req.headers["x-csrf-token"];
+export const verifyCsrf = (req, res, next) => {
+  const csrfTokenFromCookie = req.cookies?.csrfToken
+  const csrfTokenFromHeader = req.headers['x-csrf-token']
 
   if (!csrfTokenFromCookie || !csrfTokenFromHeader) {
-    return next(new AppError("CSRF token missing", 403, "CSRF_MISSING"));
+    return next(new AppError('CSRF token missing', 403, 'CSRF_MISSING'))
   }
 
   if (csrfTokenFromCookie !== csrfTokenFromHeader) {
-    return next(new AppError("Invalid CSRF token", 403, "CSRF_INVALID"));
+    return next(new AppError('Invalid CSRF token', 403, 'CSRF_INVALID'))
   }
 
-  next();
-};
+  next()
+}
 
-// JWT authentication middleware
-const protect = async (req, res, next) => {
+// Authentication middleware (Better Auth session first, fallback to legacy JWT)
+export const protect = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    // 1. Check Better Auth session (cookies or session bearer token)
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    })
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return next(new AppError("No token provided", 401, "NO_TOKEN"));
+    if (session?.user) {
+      req.user = {
+        ...session.user,
+        _id: session.user.id,
+      }
+      req.session = session.session
+      return next()
     }
 
-    const token = authHeader.split(" ")[1];
-    const decoded = verifyAccessToken(token);
-
-    const user = await User.findById(decoded.userId).select("-password");
-
-    if (!user) {
-      return next(new AppError("User not found", 401, "USER_NOT_FOUND"));
+    // 2. Fallback to manual JWT Bearer authentication
+    const authHeader = req.headers.authorization
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1]
+      try {
+        const decoded = verifyAccessToken(token)
+        const user = await User.findById(decoded.userId).select('-password')
+        if (user) {
+          req.user = user
+          return next()
+        }
+      } catch (jwtError) {
+        // Fall through to unauthorized
+      }
     }
 
-    req.user = user;
-    next();
+    return next(new AppError('Unauthorized: No valid session found', 401, 'UNAUTHORIZED'))
   } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      return next(new AppError("Access token expired", 401, "TOKEN_EXPIRED"));
-    }
-    return next(new AppError("Invalid token", 401, "INVALID_TOKEN"));
+    return next(new AppError('Authentication failed', 401, 'AUTH_FAILED'))
   }
-};
+}
 
 // Combined middleware for protected routes with CSRF
-const protectWithCsrf = [verifyCsrf, protect];
-
-module.exports = { protect, verifyCsrf, protectWithCsrf };
+export const protectWithCsrf = [verifyCsrf, protect]
