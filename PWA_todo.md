@@ -23,40 +23,40 @@
 
 Practice:
 
-* [ ] Make app installable on desktop *(after service worker is set up)*
-* [ ] Make app installable on Android *(after service worker is set up)*
+* [x] Make app installable on desktop *(after service worker is set up)*
+* [x] Make app installable on Android *(after service worker is set up)*
 
 ---
 
 ## 18.3 Service Worker Basics
 
-* [ ] Understand what a Service Worker is
-* [ ] Understand service worker lifecycle
-* [ ] Learn registration process
-* [ ] Learn install event
-* [ ] Learn activate event
-* [ ] Learn fetch event
+* [x] Understand what a Service Worker is
+* [x] Understand service worker lifecycle
+* [x] Learn registration process
+* [x] Learn install event
+* [x] Learn activate event
+* [x] Learn fetch event
 
 Practice:
 
-* [ ] Register service worker successfully
-* [ ] Verify service worker installation
+* [x] Register service worker successfully
+* [x] Verify service worker installation
 
 ---
 
 ## 18.4 Asset Caching
 
-* [ ] Learn why caching is needed
-* [ ] Cache HTML files
-* [ ] Cache CSS files
-* [ ] Cache JavaScript bundles
-* [ ] Cache images
-* [ ] Learn cache versioning
+* [x] Learn why caching is needed
+* [x] Cache HTML files
+* [x] Cache CSS files
+* [x] Cache JavaScript bundles
+* [x] Cache images
+* [x] Learn cache versioning
 
 Practice:
 
-* [ ] Load app after internet disconnect
-* [ ] Verify static assets still work
+* [x] Load app after internet disconnect
+* [x] Verify static assets still work
 
 ---
 

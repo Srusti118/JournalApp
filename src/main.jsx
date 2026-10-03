@@ -12,3 +12,11 @@ createRoot(document.getElementById('root')).render(
     </AuthProvider>
   </BrowserRouter>,
 )
+
+//Prevents runtime crashes on very old browsers or embedded webviews.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => { })
+  })
+}
+
