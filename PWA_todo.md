@@ -2,24 +2,24 @@
 
 ## 18.1 PWA Fundamentals
 
-* [ ] Understand what a PWA is
-* [ ] Understand how PWAs differ from native apps
-* [ ] Understand advantages and limitations of PWAs
-* [ ] Learn how browsers install PWAs
-* [ ] Learn when PWAs can work offline
+* [x] Understand what a PWA is
+* [x] Understand how PWAs differ from native apps
+* [x] Understand advantages and limitations of PWAs
+* [x] Learn how browsers install PWAs
+* [x] Learn when PWAs can work offline
 
 ---
 
 ## 18.2 Web App Manifest
 
-* [ ] Learn what `manifest.json` is
-* [ ] Add application name
-* [ ] Add short name
-* [ ] Add application description
-* [ ] Add theme color
-* [ ] Add background color
-* [ ] Add application icons
-* [ ] Configure standalone display mode
+* [x] Learn what `manifest.json` is
+* [x] Add application name
+* [x] Add short name
+* [x] Add application description
+* [x] Add theme color
+* [x] Add background color
+* [x] Add application icons
+* [x] Configure standalone display mode
 
 Practice:
 

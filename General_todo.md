@@ -163,4 +163,12 @@ Use this file to track progress topic by topic.
 
 ## 22. PWA (Progressive Web App)
 
-- [ ] Refer to the detailed checklist in [PWA_todo.md](./PWA_todo.md) to implement offline capabilities, background sync, and install experience.
+- [ ☑️ ] Learn PWA Fundamentals & Architecture (PWA vs Native, Service Worker proxy model)
+- [ ☑️ ] Configure Web App Manifest (`manifest.webmanifest`, standalone mode, brand icons, theme colors)
+- [ ] Service Worker Basics & Registration (`sw.js` lifecycle, registration in entrypoint)
+- [ ] Asset Caching & Pre-caching (Cache Storage API, precaching HTML/CSS/JS shell)
+- [ ] Offline Fallback Strategy (detect offline status, graceful offline UI fallback)
+- [ ] Runtime Caching Strategies (Cache-First for assets, Network-First for API)
+- [ ] App Installation Experience (`beforeinstallprompt` listener, custom install button)
+- [ ] Lighthouse PWA Audit & Verification (Score > 90, desktop & mobile installability)
+- [ ] Refer to the detailed checklist in [PWA_todo.md](./PWA_todo.md) for full breakdown.
