@@ -1,4 +1,5 @@
 import Header from './components/Header'
+import { OfflineBanner } from './components/OfflineBanner'
 import './App.css'
 import { useEffect, useState } from 'react'
 import { ThemeContext } from './ThemeContext'
@@ -60,6 +61,7 @@ const App = () => {
             user={user}
             onLogout={logout}
           />
+          <OfflineBanner />
 
           <Routes>
             <Route

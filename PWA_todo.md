@@ -62,16 +62,16 @@ Practice:
 
 ## 18.5 Offline Fallback
 
-* [ ] Learn offline fallback strategy
-* [ ] Create offline page
-* [ ] Detect internet loss
-* [ ] Show offline message
+* [x] Learn offline fallback strategy
+* [x] Create offline page
+* [x] Detect internet loss
+* [x] Show offline message
 
 Practice:
 
-* [ ] Disconnect internet
-* [ ] Open app
-* [ ] Verify offline page appears
+* [x] Disconnect internet
+* [x] Open app
+* [x] Verify offline page appears
 
 ---
 

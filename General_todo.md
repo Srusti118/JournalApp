@@ -167,7 +167,7 @@ Use this file to track progress topic by topic.
 - [ ☑️ ] Configure Web App Manifest (`manifest.webmanifest`, standalone mode, brand icons, theme colors)
 - [ ☑️ ] Service Worker Basics & Registration (`sw.js` lifecycle, registration in entrypoint)
 - [ ☑️ ] Asset Caching & Pre-caching (Cache Storage API, precaching HTML/CSS/JS shell)
-- [ ] Offline Fallback Strategy (detect offline status, graceful offline UI fallback)
+- [ ☑️ ] Offline Fallback Strategy (detect offline status, graceful offline UI fallback)
 - [ ] Runtime Caching Strategies (Cache-First for assets, Network-First for API)
 - [ ] App Installation Experience (`beforeinstallprompt` listener, custom install button)
 - [ ] Lighthouse PWA Audit & Verification (Score > 90, desktop & mobile installability)
