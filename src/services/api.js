@@ -1,4 +1,4 @@
-import { buildUrl, getAuthUrl } from "../constants/api";
+import { buildUrl } from '../constants/api'
 
 // Default fetch options
 const defaultOptions = {
@@ -123,90 +123,6 @@ class ApiClient {
 
 // Singleton instance
 export const api = new ApiClient();
-
-// Auth-specific API calls
-export const authApi = {
-  register: async (userData) => {
-    const res = await fetch(buildUrl("/auth/register"), {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      const error = new Error(data.message || "Registration failed");
-      error.code = data.code;
-      throw error;
-    }
-
-    return data.data;
-  },
-
-  login: async (credentials) => {
-    const res = await fetch(buildUrl("/auth/login"), {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(credentials),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      const error = new Error(data.message || "Login failed");
-      error.code = data.code;
-      throw error;
-    }
-
-    return data.data;
-  },
-
-  logout: async () => {
-    const res = await fetch(buildUrl("/auth/logout"), {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    return res.json();
-  },
-
-  refreshToken: async () => {
-    const res = await fetch(buildUrl("/auth/refresh-token"), {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error("Token refresh failed");
-    }
-
-    return data.data;
-  },
-
-  getMe: async (accessToken) => {
-    const res = await fetch(buildUrl("/auth/me"), {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error("Failed to get user");
-    }
-
-    return data.data;
-  },
-};
 
 // Notes API calls
 export const notesApi = {

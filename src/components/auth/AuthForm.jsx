@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import styles from './Auth.module.css'
-import { buildUrl, endpoints } from '../../constants/api'
 import { authClient } from '../../services/authClient.js'
 
 export default function AuthForm({ type, onAuth }) {

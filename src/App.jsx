@@ -7,7 +7,6 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
-import AuthCallback from './pages/AuthCallback'
 import { useAuth } from './hooks/useAuth'
 import { useNotes } from './hooks/useNotes'
 
@@ -88,7 +87,6 @@ const App = () => {
               path="/register"
               element={!user ? <Register /> : <Navigate to="/" replace />}
             />
-            <Route path="/auth/callback" element={<AuthCallback />} />
           </Routes>
         </div>
       </div>

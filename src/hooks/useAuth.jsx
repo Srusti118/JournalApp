@@ -11,8 +11,10 @@ export function AuthProvider({ children }) {
     if (!session?.user) return null
     return {
       ...session.user,
+      id: session.user.id,
       _id: session.user.id,
-      username: session.user.username || session.user.name || session.user.email.split('@')[0],
+      name: session.user.name || '',
+      username: session.user.username || session.user.name || session.user.email,
       avatar: session.user.image || session.user.avatar || '',
     }
   }, [session])
