@@ -1,15 +1,96 @@
+:root {
+  --bg-canvas: #faf8f5;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f4efe8;
+  --bg-surface-translucent: rgba(255, 255, 255, 0.85);
+  
+  --border-subtle: #eae5dc;
+  --border-strong: #dcd5c9;
+  --border-focus: #3a5a4a;
+
+  --text-main: #211f1d;
+  --text-secondary: #57524b;
+  --text-muted: #878074;
+
+  --accent-sage: #3a5a4a;
+  --accent-sage-hover: #2e473a;
+  --accent-sage-light: #ebf2ee;
+  --accent-warm: #b8623d;
+  --accent-warm-light: #fbf0ea;
+
+  --shadow-sm: 0 1px 3px rgba(33, 31, 29, 0.04);
+  --shadow-md: 0 4px 14px rgba(33, 31, 29, 0.05), 0 1px 3px rgba(33, 31, 29, 0.03);
+  --shadow-lg: 0 10px 28px rgba(33, 31, 29, 0.07), 0 2px 6px rgba(33, 31, 29, 0.04);
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+}
+
+:root[data-theme='dark'],
+.dark {
+  --bg-canvas: #131211;
+  --bg-surface: #1a1918;
+  --bg-surface-elevated: #242220;
+  --bg-surface-translucent: rgba(26, 25, 24, 0.85);
+
+  --border-subtle: #292623;
+  --border-strong: #383430;
+  --border-focus: #6e9d84;
+
+  --text-main: #f5f2ec;
+  --text-secondary: #c2bcb2;
+  --text-muted: #857f75;
+
+  --accent-sage: #6e9d84;
+  --accent-sage-hover: #83b098;
+  --accent-sage-light: #1c2720;
+  --accent-warm: #d67a54;
+  --accent-warm-light: #2b1d17;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  background-color: #fff0f3;
-  color: #3d1a24;
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
   min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }

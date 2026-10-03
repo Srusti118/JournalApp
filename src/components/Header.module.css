@@ -1,111 +1,162 @@
 .header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #ffc0cc;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 16px;
 }
 
-.headerDark {
-  border-bottom-color: #6b2a3a;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brandIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--accent-sage-light);
+  color: var(--accent-sage);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.brand:hover .brandIcon {
+  transform: rotate(-4deg) scale(1.03);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  margin: 0 0 4px;
-  font-size: 1.75rem;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
   font-weight: 600;
-  color: #3d1a24;
-}
-
-.titleDark {
-  color: #f5d0dc;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .subtitle {
-  margin: 0;
-  font-size: 0.87rem;
-  color: #e8607a;
-}
-
-.subtitleDark {
-  color: #c07090;
+  margin: 2px 0 0 0;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--text-muted);
 }
 
 .nav {
   display: flex;
-  gap: 20px;
+  gap: 14px;
   align-items: center;
 }
 
 .link {
-  color: #c04060;
+  color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.2s;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .link:hover {
-  color: #3d1a24;
-}
-
-.linkDark {
-  color: #e090a8;
-}
-
-.linkDark:hover {
-  color: #f5d0dc;
-}
-
-.toggleBtn {
-  background: none;
-  border: 1px solid #ffc0cc;
-  border-radius: 22px;
-  padding: 5px 14px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: #c04060;
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-
-.toggleBtnDark {
-  border-color: #6b2a3a;
-  color: #e090a8;
+  color: var(--text-main);
+  background: var(--bg-surface-elevated);
 }
 
 .userInfo {
-  font-size: 0.9rem;
-  color: #c04060;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 6px;
+  border-radius: 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
-.userInfoDark {
-  color: #e090a8;
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--accent-sage-light);
+}
+
+.avatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-sage-light);
+  color: var(--accent-sage);
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .logoutBtn {
-  background: none;
-  border: 1px solid #ffc0cc;
-  border-radius: 4px;
-  padding: 5px 12px;
-  font-size: 0.85rem;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
   cursor: pointer;
-  color: #c04060;
+  color: var(--text-secondary);
   font-family: inherit;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .logoutBtn:hover {
-  background: #ffc0cc;
-  color: #3d1a24;
+  border-color: var(--accent-warm);
+  color: var(--accent-warm);
+  background: var(--accent-warm-light);
 }
 
-.logoutBtnDark {
-  border-color: #6b2a3a;
-  color: #e090a8;
+.toggleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-family: inherit;
+  transition: all 0.2s ease;
 }
 
-.logoutBtnDark:hover {
-  background: #6b2a3a;
-  color: #f5d0dc;
+.toggleBtn:hover {
+  border-color: var(--border-strong);
+  color: var(--text-main);
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

@@ -1,153 +1,159 @@
 .card {
-  background: #fff5f7;
-  border: 1px solid #ffc0cc;
-  border-radius: 16px;
-  padding: 22px 26px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 10px rgba(220, 80, 120, 0.07);
-  transition: box-shadow 0.2s, background 0.3s;
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 26px 30px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: 0 6px 20px rgba(220, 80, 120, 0.13);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
 }
 
-.cardDark {
-  background: #3d1020;
-  border-color: #6b2a3a;
-  box-shadow: 0 2px 10px rgba(180, 40, 80, 0.15);
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
-.cardDark:hover {
-  box-shadow: 0 6px 20px rgba(180, 40, 80, 0.25);
+.metaInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
 }
 
 .date {
-  font-size: 0.75rem;
-  color: #e8607a;
-  letter-spacing: 0.07em;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-sage);
 }
 
-.dateDark {
-  color: #c07090;
+.dotSeparator {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.6;
+}
+
+.readTime {
+  color: var(--text-muted);
 }
 
 .title {
-  margin: 6px 0 10px;
-  font-size: 1.15rem;
+  margin: 0 0 12px 0;
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
   font-weight: 600;
-  color: #3d1a24;
-}
-
-.titleDark {
-  color: #f5d0dc;
+  line-height: 1.35;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
 }
 
 .body {
   margin: 0;
-  color: #7a3050;
-  line-height: 1.78;
-  font-size: 0.94rem;
-}
-
-.bodyDark {
-  color: #e0a8bc;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.02rem;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .actions {
   display: flex;
-  gap: 8px;
-  margin-top: 16px;
   align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .likeBtn {
-  background: none;
-  border: 1px solid #ffc0cc;
-  border-radius: 22px;
-  padding: 4px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 6px 14px;
   cursor: pointer;
-  font-size: 0.82rem;
-  color: #c04060;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-secondary);
   font-family: inherit;
-  transition: border-color 0.2s, color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .likeBtn:hover {
-  border-color: #ff85a0;
-  color: #e8607a;
+  background: var(--accent-warm-light);
+  border-color: var(--accent-warm);
+  color: var(--accent-warm);
 }
 
-.likeBtnDark {
-  border-color: #6b2a3a;
-  color: #e090a8;
+.likeBtnActive {
+  background: var(--accent-warm-light);
+  border-color: var(--accent-warm);
+  color: var(--accent-warm);
 }
 
-.likeBtnDark:hover {
-  border-color: #a04060;
-  color: #f5d0dc;
+.likeIcon {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.deleteBtn {
-  background: none;
-  border: 1px solid transparent;
-  color: #e0a8b8;
-  border-radius: 22px;
-  padding: 4px 14px;
-  cursor: pointer;
-  font-size: 0.82rem;
-  font-family: inherit;
-  margin-left: auto;
-  transition: color 0.2s;
-}
-
-.deleteBtn:hover {
-  color: #c03050;
-}
-
-.deleteBtnDark {
-  color: #8a5060;
-}
-
-.deleteBtnDark:hover {
-  color: #f090a8;
-}
-
-.liked {
-  font-size: 0.82rem;
-  color: #e8607a;
-}
-
-.likedDark {
-  color: #c07090;
+.likeBtn:hover .likeIcon {
+  transform: scale(1.2);
 }
 
 .editBtn {
-  background: none;
-  border: 1px solid #ffc0cc;
-  border-radius: 22px;
-  padding: 4px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 6px 14px;
   cursor: pointer;
   font-size: 0.82rem;
-  color: #c04060;
+  font-weight: 500;
+  color: var(--text-secondary);
   font-family: inherit;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .editBtn:hover {
-  background: #ffecf0;
-  border-color: #ff85a0;
-  color: #e8607a;
+  background: var(--bg-surface-elevated);
+  border-color: var(--border-strong);
+  color: var(--text-main);
 }
 
-.editBtnDark {
-  border-color: #6b2a3a;
-  color: #e090a8;
+.deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-family: inherit;
+  margin-left: auto;
+  transition: all 0.2s ease;
 }
 
-.editBtnDark:hover {
-  background: #501828;
-  border-color: #a04060;
-  color: #f5d0dc;
+.deleteBtn:hover {
+  color: var(--accent-warm);
+  background: var(--accent-warm-light);
+  border-color: var(--accent-warm-light);
 }

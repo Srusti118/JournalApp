@@ -1,125 +1,95 @@
-/* ── Layout ── */
+/* ── Sanctuary Layout ── */
 .app {
   min-height: 100vh;
-  background-color: #fff0f3;
-  transition: background 0.3s, color 0.3s;
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .appInner {
-  max-width: 700px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: 44px 24px;
+  padding: 48px 24px 80px;
 }
 
-/* ── Dark mode ── */
-.app.dark {
-  background-color: #2d0a15;
-  color: #f5d0dc;
-}
-
-.app.dark .entry-form {
-  background: #3d1020;
-  border-color: #6b2a3a;
-}
-
-.app.dark .form-input,
-.app.dark .form-textarea {
-  background: #2d0a15;
-  border-color: #6b2a3a;
-  color: #f5d0dc;
-}
-
-.app.dark .form-input::placeholder,
-.app.dark .form-textarea::placeholder {
-  color: #a06070;
-}
-
-.app.dark .form-button {
-  background: #8b3050;
-  color: #ffe8ee;
-}
-
-.app.dark .form-button:hover {
-  background: #a03860;
-}
-
-/* ── Entry Form ── */
-.entry-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 36px;
-  padding: 26px;
-  background: #fff5f7;
-  border: 1px solid #ffc0cc;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(220, 80, 120, 0.07);
-}
-
-.form-input,
-.form-textarea {
-  padding: 11px 15px;
-  border: 1px solid #ffc0cc;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  outline: none;
-  background: #fff0f3;
-  color: #3d1a24;
-  transition: border-color 0.2s;
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 120px;
-  line-height: 1.7;
-}
-
-.form-input:focus,
-.form-textarea:focus {
-  border-color: #ff85a0;
-}
-
-.form-button {
-  align-self: flex-end;
-  padding: 9px 26px;
-  background: #e8607a;
-  color: #fff5f7;
-  border: none;
-  border-radius: 22px;
-  font-size: 0.88rem;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.form-button:hover {
-  background: #d04060;
-}
-
-/* ── Inspiration Section ── */
+/* ── Inspiration / Daily Reflection Section ── */
 .inspiration-section {
-  margin-bottom: 20px;
-  padding: 14px 18px;
-  background: linear-gradient(135deg, #ffe8f0 0%, #fff5f7 100%);
-  border: 1px solid #ffc0cc;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(220, 80, 120, 0.05);
-  text-align: center;
+  position: relative;
+  margin-bottom: 28px;
+  padding: 24px 28px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inspiration-section:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.inspiration-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.inspiration-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-sage);
+  background: var(--accent-sage-light);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.inspiration-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inspiration-refresh-btn:hover {
+  color: var(--text-main);
+  border-color: var(--border-strong);
+  background: var(--bg-surface-elevated);
+}
+
+.inspiration-refresh-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.inspiration-refresh-btn:hover svg {
+  transform: rotate(90deg);
 }
 
 .inspiration-loading {
-  color: #a06070;
+  color: var(--text-muted);
   font-style: italic;
-  margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  margin: 10px 0;
 }
 
 .inspiration-error {
-  color: #e8607a;
-  margin: 0;
-  font-weight: 500;
-  font-size: 0.85rem;
+  color: var(--accent-warm);
+  font-size: 0.88rem;
+  margin: 10px 0;
 }
 
 .inspiration-card {
@@ -129,45 +99,233 @@
 }
 
 .inspiration-quote {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: #3d1a24;
-  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.6;
   font-style: italic;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .inspiration-author {
-  color: #8b3050;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 4px 0 0 0;
+}
+
+/* ── Entry Form ── */
+.entry-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 40px;
+  padding: 28px 30px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.entry-form:focus-within {
+  border-color: var(--border-focus);
+}
+
+.entry-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.entry-form-title {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-main);
 }
 
-.inspiration-section .form-button {
-  padding: 6px 18px;
-  font-size: 0.8rem;
-  align-self: center;
-  margin-top: 4px;
+.editing-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 12px;
+  background: var(--accent-warm-light);
+  color: var(--accent-warm);
 }
 
-/* Dark mode for inspiration */
-.app.dark .inspiration-section {
-  background: linear-gradient(135deg, #3d1020 0%, #4d1828 100%);
-  border-color: #6b2a3a;
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  background: var(--bg-surface-elevated);
+  color: var(--text-main);
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.app.dark .inspiration-loading {
-  color: #c08090;
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
 }
 
-.app.dark .inspiration-error {
-  color: #ff85a0;
+.form-input:focus,
+.form-textarea:focus {
+  background: var(--bg-surface);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(58, 90, 74, 0.12);
 }
 
-.app.dark .inspiration-quote {
-  color: #f5d0dc;
+.form-textarea {
+  resize: vertical;
+  min-height: 140px;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.75;
 }
 
-.app.dark .inspiration-author {
-  color: #ff9db3;
+.form-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.form-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.form-error-msg {
+  color: var(--accent-warm);
+  font-size: 0.82rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: var(--accent-sage);
+  color: #ffffff;
+  border: none;
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(58, 90, 74, 0.2);
+  transition: all 0.2s ease;
+}
+
+.form-button:hover {
+  background: var(--accent-sage-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(58, 90, 74, 0.3);
+}
+
+.form-button:active {
+  transform: translateY(0);
+}
+
+.form-button-cancel {
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-button-cancel:hover {
+  background: var(--bg-surface-elevated);
+  border-color: var(--border-strong);
+  color: var(--text-main);
+}
+
+/* ── Empty State ── */
+.empty-state {
+  text-align: center;
+  padding: 56px 24px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.empty-state-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-sage-light);
+  color: var(--accent-sage);
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin: 0 0 8px 0;
+}
+
+.empty-state-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  max-width: 380px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── Loading Screen ── */
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background-color: var(--bg-canvas);
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border-subtle);
+  border-top-color: var(--accent-sage);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
