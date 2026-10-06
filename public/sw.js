@@ -45,7 +45,7 @@ self.addEventListener('fetch', (event) => {
   if (requestUrl.origin !== self.location.origin) return
   if (requestUrl.pathname.startsWith('/api')) return
 
-  // Navigation requests: Network-first, fallback to cached index.html
+  // 1. Navigation requests: Network-First, fallback to cached index.html
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() => {
@@ -55,11 +55,33 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // Static assets: Cache-First with Stale-While-Revalidate
+  const isImage = /\.(png|jpg|jpeg|svg|webp|ico)$/i.test(requestUrl.pathname)
+
+  // 2. Images: Cache-First strategy
+  if (isImage) {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) return cachedResponse
+
+        return fetch(event.request).then((networkResponse) => {
+          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+            return networkResponse
+          }
+          const responseToCache = networkResponse.clone()
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache)
+          })
+          return networkResponse
+        })
+      })
+    )
+    return
+  }
+
+  // 3. Static assets (JS, CSS): Stale-While-Revalidate strategy
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Fetch update in background
         fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => {

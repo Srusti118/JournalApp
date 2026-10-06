@@ -150,6 +150,27 @@
   transform: scale(1.05);
 }
 
+.installBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-sage-light);
+  color: var(--accent-sage);
+  border: 1px solid var(--accent-sage);
+  border-radius: 18px;
+  padding: 6px 13px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.installBtn:hover {
+  background: var(--accent-sage);
+  color: #ffffff;
+}
+
 @media (max-width: 600px) {
   .header {
     flex-direction: column;

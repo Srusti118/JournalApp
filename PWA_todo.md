@@ -79,33 +79,33 @@ Practice:
 
 Learn:
 
-* [ ] Cache First
-* [ ] Network First
-* [ ] Stale While Revalidate
+* [x] Cache First
+* [x] Network First
+* [x] Stale While Revalidate
 
 Understand:
 
-* [ ] When each strategy should be used
-* [ ] Pros and cons of each strategy
+* [x] When each strategy should be used
+* [x] Pros and cons of each strategy
 
 Practice:
 
-* [ ] Use Cache First for images
-* [ ] Use Network First for API calls
+* [x] Use Cache First for images
+* [x] Use Network First for API calls
 
 ---
 
 ## 18.7 App Installation Experience
 
-* [ ] Detect install prompt
-* [ ] Show install button
-* [ ] Handle installation flow
-* [ ] Test uninstall/reinstall
+* [x] Detect install prompt
+* [x] Show install button
+* [x] Handle installation flow
+* [x] Test uninstall/reinstall
 
 Practice:
 
-* [ ] Install app on Android
-* [ ] Install app on Desktop
+* [x] Install app on Android
+* [x] Install app on Desktop
 
 ---
 

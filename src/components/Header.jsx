@@ -1,11 +1,13 @@
 import { useContext } from 'react'
 import { ThemeContext } from '../ThemeContext'
 import { Link } from 'react-router-dom'
+import { useInstallPrompt } from '../hooks/useInstallPrompt'
 import styles from './Header.module.css'
 
-function Header({ onToggleTheme, user, onLogout }) {
+export function Header({ onToggleTheme, user, onLogout }) {
   const theme = useContext(ThemeContext)
   const isDark = theme === 'dark'
+  const { isInstallable, handleInstallClick } = useInstallPrompt()
 
   return (
     <header className={styles.header}>
@@ -57,6 +59,23 @@ function Header({ onToggleTheme, user, onLogout }) {
         )}
 
         <Link to="/about" className={styles.link}>About</Link>
+
+        {isInstallable && (
+          <button
+            onClick={handleInstallClick}
+            className={styles.installBtn}
+            type="button"
+            aria-label="Install Sanctuary app"
+            title="Install Sanctuary app"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Install</span>
+          </button>
+        )}
 
         <button
           onClick={onToggleTheme}
