@@ -111,11 +111,11 @@ Practice:
 
 ## 18.8 PWA Auditing
 
-* [ ] Learn Lighthouse basics
-* [ ] Run Lighthouse audit
-* [ ] Fix installability issues
-* [ ] Fix performance warnings
-* [ ] Fix accessibility warnings
+* [x] Learn Lighthouse basics
+* [x] Run Lighthouse audit
+* [x] Fix installability issues
+* [x] Fix performance warnings
+* [x] Fix accessibility warnings
 
 ---
 
@@ -172,10 +172,10 @@ Understanding:
 
 Convert your Journal App into:
 
-* [ ] Installable application
-* [ ] Home screen icon
-* [ ] Standalone app experience
-* [ ] Offline loading of frontend assets
-* [ ] Offline fallback page
+* [x] Installable application
+* [x] Home screen icon
+* [x] Standalone app experience
+* [x] Offline loading of frontend assets
+* [x] Offline fallback page
 * [ ] Offline creation/editing of journal entries (via IndexedDB & Sync)
-* [ ] Lighthouse PWA score above 90
+* [x] Lighthouse PWA score above 90
