@@ -10,8 +10,8 @@ const db = client.db()
 export const auth = betterAuth({
   database: mongodbAdapter(db),
   secret: process.env.BETTER_AUTH_SECRET || config.jwtSecret,
-  baseURL: `http://localhost:${config.port}`,
-  trustedOrigins: config.corsOrigins,
+  baseURL: process.env.BETTER_AUTH_URL || `http://localhost:${config.port}`,
+  trustedOrigins: Array.from(new Set([...config.corsOrigins, config.clientUrl, process.env.CLIENT_URL].filter(Boolean))),
   emailAndPassword: {
     enabled: true,
   },
