@@ -51,11 +51,11 @@ export const sendTestReminder = async (userId) => {
   }
 
   const payload = {
-    title: 'Sanctuary — Reminder Test',
+    title: 'DearDiary — Reminder Test',
     body: 'Your scheduled reminder is configured and working perfectly!',
     icon: '/icon-192.png',
     badge: '/icon.svg',
-    tag: 'sanctuary-test-reminder',
+    tag: 'deardiary-test-reminder',
     timestamp: Date.now(),
   }
 

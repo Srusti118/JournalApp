@@ -2,19 +2,40 @@ import { useState } from 'react'
 import styles from './JournalEntry.module.css'
 
 function JournalEntry({ _id, title, createdAt, body, isPendingSync, onEdit, onDelete }) {
-  const [likes, setLikes] = useState(0)
+  const [isFavorite, setIsFavorite] = useState(() => {
+    if (!_id) return false
+    try {
+      return localStorage.getItem(`deardiary_fav_${_id}`) === 'true'
+    } catch {
+      return false
+    }
+  })
 
-  const handleLike = () => {
-    setLikes((prev) => prev + 1)
+  const handleToggleFavorite = () => {
+    setIsFavorite((prev) => {
+      const next = !prev
+      if (_id) {
+        try {
+          if (next) {
+            localStorage.setItem(`deardiary_fav_${_id}`, 'true')
+          } else {
+            localStorage.removeItem(`deardiary_fav_${_id}`)
+          }
+        } catch {
+          // Ignore localStorage errors
+        }
+      }
+      return next
+    })
   }
 
   // Format date gracefully
   const formattedDate = createdAt
     ? new Intl.DateTimeFormat('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      }).format(new Date(createdAt))
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(new Date(createdAt))
     : 'Recent'
 
   // Estimate reading time
@@ -52,14 +73,26 @@ function JournalEntry({ _id, title, createdAt, body, isPendingSync, onEdit, onDe
       <footer className={styles.actions}>
         <button
           type="button"
-          className={`${styles.likeBtn} ${likes > 0 ? styles.likeBtnActive : ''}`}
-          onClick={handleLike}
-          aria-label="Heart reflection"
+          className={`${styles.favoriteBtn} ${isFavorite ? styles.favoriteBtnActive : ''}`}
+          onClick={handleToggleFavorite}
+          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          title={isFavorite ? 'Favorite' : 'Add to favorites'}
         >
-          <span className={styles.likeIcon} aria-hidden="true">
-            {likes > 0 ? '❤️' : '🤍'}
-          </span>
-          <span>{likes}</span>
+          <svg
+            className={styles.favoriteIcon}
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill={isFavorite ? 'currentColor' : 'none'}
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+          <span>{isFavorite ? 'Favorite' : 'Favorite'}</span>
         </button>
 
         {onEdit && (

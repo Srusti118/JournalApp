@@ -41,7 +41,7 @@ const About = () => {
             letterSpacing: '-0.01em',
           }}
         >
-          About Sanctuary
+          About DearDiary
         </h2>
       </div>
 
@@ -53,7 +53,7 @@ const About = () => {
           fontSize: '1rem',
         }}
       >
-        Sanctuary is designed as a peaceful, distraction-free environment to record thoughts, track personal growth, and cultivate mindfulness.
+        DearDiary is designed as a peaceful, distraction-free environment to record thoughts, track personal growth, and cultivate mindfulness.
       </p>
 
       <p

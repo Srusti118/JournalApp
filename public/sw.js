@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sanctuary-shell-v1'
+const CACHE_NAME = 'deardiary-shell-v2'
 
 const PRECACHE_ASSETS = [
   '/',
@@ -109,7 +109,7 @@ self.addEventListener('fetch', (event) => {
   )
 })
 
-// 4. Notification Click Event: Focus existing window or open Sanctuary
+// 4. Notification Click Event: Focus existing window or open DearDiary
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
 
@@ -132,11 +132,11 @@ self.addEventListener('notificationclick', (event) => {
 // 5. Push Event: Handle background push messages from server
 self.addEventListener('push', (event) => {
   let data = {
-    title: 'Sanctuary — Daily Reflection',
+    title: 'DearDiary — Daily Reflection',
     body: 'Time to record your mindful thoughts today.',
     icon: '/icon-192.png',
     badge: '/icon.svg',
-    tag: 'sanctuary-scheduled-reflection',
+    tag: 'deardiary-scheduled-reflection',
   }
 
   if (event.data) {
@@ -152,7 +152,7 @@ self.addEventListener('push', (event) => {
       body: data.body,
       icon: data.icon || '/icon-192.png',
       badge: data.badge || '/icon.svg',
-      tag: data.tag || 'sanctuary-scheduled-reflection',
+      tag: data.tag || 'deardiary-scheduled-reflection',
       renotify: true,
       data: { url: '/' },
     })

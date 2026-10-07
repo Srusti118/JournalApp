@@ -19,14 +19,15 @@ export function Header({ onToggleTheme, user, onLogout }) {
       <Link to="/" className={styles.brand}>
         <div className={styles.brandIcon} aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10a10 10 0 0 1-10-10C2 6.477 6.477 2 12 2z" />
-            <path d="M12 6v12" />
-            <path d="M8 10c2-2 6-2 8 0" />
-            <path d="M8 14c2-2 6-2 8 0" />
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+            <path d="M8 7h8" />
+            <path d="M8 11h8" />
+            <path d="M8 15h5" />
+            <path d="M16 2v7l2-1.5 2 1.5V2" fill="currentColor" stroke="none" />
           </svg>
         </div>
         <div className={styles.brandText}>
-          <h1 className={styles.title}>Sanctuary</h1>
+          <h1 className={styles.title}>DearDiary</h1>
           <p className={styles.subtitle}>A safe space for your thoughts</p>
         </div>
       </Link>
@@ -70,8 +71,8 @@ export function Header({ onToggleTheme, user, onLogout }) {
             onClick={handleInstallClick}
             className={styles.installBtn}
             type="button"
-            aria-label="Install Sanctuary app"
-            title="Install Sanctuary app"
+            aria-label="Install DearDiary app"
+            title="Install DearDiary app"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

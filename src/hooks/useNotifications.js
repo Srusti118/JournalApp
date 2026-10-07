@@ -68,7 +68,7 @@ export const useNotifications = () => {
     return subscription
   }
 
-  const sendLocalNotification = async (title = 'Sanctuary — Daily Reflection', options = {}) => {
+  const sendLocalNotification = async (title = 'DearDiary — Daily Reflection', options = {}) => {
     if (!isSupported || permission !== 'granted') return
 
     try {
@@ -77,7 +77,7 @@ export const useNotifications = () => {
         body: 'Take a mindful pause. Record your reflections for today.',
         icon: '/icon-192.png',
         badge: '/icon.svg',
-        tag: 'sanctuary-daily-reflection',
+        tag: 'deardiary-daily-reflection',
         renotify: true,
         ...options,
       })

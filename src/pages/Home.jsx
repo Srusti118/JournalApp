@@ -98,7 +98,7 @@ const Home = ({ entries = [], addEntry, updateEntry, deleteEntry, loading: notes
             </div>
             <h3 className="empty-state-title">A quiet moment for yourself</h3>
             <p className="empty-state-desc">
-              Your sanctuary is currently clear. Take a gentle breath and pen your thoughts, gratitude, or reflections above.
+              Your diary is currently clear. Take a gentle breath and pen your thoughts, gratitude, or reflections above.
             </p>
           </div>
         ) : (

@@ -25,11 +25,11 @@ export const initCron = () => {
       for (const reminder of activeReminders) {
         try {
           const payload = {
-            title: 'Sanctuary — Daily Reflection',
-            body: 'It is time for your daily mindful reflection. Open Sanctuary to write your thoughts.',
+            title: 'DearDiary — Daily Reflection',
+            body: 'It is time for your daily mindful reflection. Open DearDiary to write your thoughts.',
             icon: '/icon-192.png',
             badge: '/icon.svg',
-            tag: 'sanctuary-scheduled-reflection',
+            tag: 'deardiary-scheduled-reflection',
             timestamp: Date.now(),
           }
 

@@ -29,7 +29,7 @@ export const OfflineBanner = () => {
         <line x1="12" y1="20" x2="12.01" y2="20" />
       </svg>
       <p className={styles.text}>
-        You are currently offline. Sanctuary is running from your local cache.
+        You are currently offline. DearDiary is running from your local cache.
       </p>
     </div>
   )
