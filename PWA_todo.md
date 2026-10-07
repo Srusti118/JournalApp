@@ -121,10 +121,10 @@ Practice:
 
 ## 18.9 Push Notifications (Optional)
 
-* [ ] Learn Web Push basics
-* [ ] Learn notification permissions
-* [ ] Send local notification
-* [ ] Learn push notification architecture
+* [x] Learn Web Push basics
+* [x] Learn notification permissions
+* [x] Send local notification
+* [x] Learn push notification architecture
 
 ---
 

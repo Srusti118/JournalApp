@@ -150,6 +150,27 @@
   transform: scale(1.05);
 }
 
+.notifyBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.notifyBtn:hover {
+  border-color: var(--accent-sage);
+  color: var(--accent-sage);
+  transform: scale(1.05);
+}
+
 .installBtn {
   display: flex;
   align-items: center;
