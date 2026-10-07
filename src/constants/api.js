@@ -18,6 +18,11 @@ export const endpoints = {
     create: '/notes',
     delete: (id) => `/notes/${id}`,
   },
+  reminders: {
+    base: '/reminders',
+    vapidKey: '/reminders/vapid-key',
+    test: '/reminders/test',
+  },
 }
 
 // Build full URL

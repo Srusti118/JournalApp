@@ -44,6 +44,13 @@ const config = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     redirectUri: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5000/api/auth/google/callback',
   },
+
+  // Web Push VAPID
+  vapid: {
+    publicKey: process.env.VAPID_PUBLIC_KEY,
+    privateKey: process.env.VAPID_PRIVATE_KEY,
+    mailto: process.env.VAPID_MAILTO || 'mailto:admin@sanctuary.app',
+  },
 }
 
 // Validate required environment variables

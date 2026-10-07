@@ -1,32 +1,20 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ThemeContext } from '../ThemeContext'
 import { Link } from 'react-router-dom'
 import { useInstallPrompt } from '../hooks/useInstallPrompt'
 import { useNotifications } from '../hooks/useNotifications'
+import { ReminderModal } from './ReminderModal'
 import styles from './Header.module.css'
 
 export function Header({ onToggleTheme, user, onLogout }) {
   const theme = useContext(ThemeContext)
   const isDark = theme === 'dark'
+  const [isReminderOpen, setIsReminderOpen] = useState(false)
   const { isInstallable, handleInstallClick } = useInstallPrompt()
-  const { permission, requestPermission, sendLocalNotification, isSupported: notificationsSupported } = useNotifications()
-
-  const handleNotificationClick = async () => {
-    if (permission === 'default') {
-      const res = await requestPermission()
-      if (res === 'granted') {
-        sendLocalNotification('Welcome to Sanctuary Reminders', {
-          body: 'Mindful journaling reminders are now active.'
-        })
-      }
-    } else if (permission === 'granted') {
-      sendLocalNotification('Daily Journal Reflection', {
-        body: 'Take a quiet moment today to reflect and write in your sanctuary.'
-      })
-    }
-  }
+  const { permission, isSupported: notificationsSupported } = useNotifications()
 
   return (
+    <>
     <header className={styles.header}>
       <Link to="/" className={styles.brand}>
         <div className={styles.brandIcon} aria-hidden="true">
@@ -96,11 +84,11 @@ export function Header({ onToggleTheme, user, onLogout }) {
 
         {notificationsSupported && permission !== 'denied' && (
           <button
-            onClick={handleNotificationClick}
+            onClick={() => setIsReminderOpen(true)}
             className={styles.notifyBtn}
             type="button"
-            aria-label={permission === 'granted' ? 'Send journal reminder' : 'Enable journal reminders'}
-            title={permission === 'granted' ? 'Send test reminder' : 'Enable journal reminders'}
+            aria-label="Set daily journaling reminders"
+            title="Set daily journaling reminders"
           >
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -136,6 +124,11 @@ export function Header({ onToggleTheme, user, onLogout }) {
         </button>
       </nav>
     </header>
+    <ReminderModal
+      isOpen={isReminderOpen}
+      onClose={() => setIsReminderOpen(false)}
+    />
+    </>
   )
 }
 

@@ -7,6 +7,7 @@ import { swaggerSpec, swaggerUi, swaggerUiOptions } from './config/swagger.js'
 import { toNodeHandler } from 'better-auth/node'
 import { auth } from './config/auth.js'
 import noteRoutes from './routes/note.routes.js'
+import reminderRoutes from './routes/reminder.routes.js'
 
 const app = express()
 
@@ -42,6 +43,7 @@ if (config.enableSwagger) {
 
 // Routes
 app.use('/api/notes', noteRoutes)
+app.use('/api/reminders', reminderRoutes)
 
 // Error handling
 app.use(errorHandler)

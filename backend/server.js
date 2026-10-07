@@ -19,6 +19,10 @@ const startServer = async () => {
         console.log(`Swagger documentation available at http://localhost:${config.port}/api-docs`)
       }
     })
+
+    // Start background cron job for scheduled reminders
+    const { initCron } = await import('./services/cron.service.js')
+    initCron()
   } catch (error) {
     console.error('Failed to start server:', error.message)
     process.exit(1)
