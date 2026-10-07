@@ -32,6 +32,21 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
+// Root route - redirect to frontend
+app.get('/', (req, res) => {
+  const error = req.query.error
+  if (error) {
+    return res.redirect(`${config.clientUrl}/login?error=${encodeURIComponent(error)}`)
+  }
+  res.redirect(config.clientUrl)
+})
+
+// Fallback Google callback route
+app.get('/api/auth/google/callback', (req, res) => {
+  const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : ''
+  res.redirect(`/api/auth/callback/google${query}`)
+})
+
 // Swagger API Documentation
 if (config.enableSwagger) {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions))

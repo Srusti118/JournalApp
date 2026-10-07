@@ -20,6 +20,7 @@ export const auth = betterAuth({
       enabled: true,
       trustedProviders: ['google'],
     },
+    skipStateCookieCheck: true,
   },
   socialProviders: {
     ...(config.google.clientId && config.google.clientSecret
