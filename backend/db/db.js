@@ -1,6 +1,10 @@
+import dns from 'dns'
 import mongoose from 'mongoose'
 
-async function connectDB() {
+// Ensure Node.js resolves MongoDB Atlas SRV records reliably across all network environments
+dns.setServers(['8.8.8.8', '8.8.4.4'])
+
+const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
       family: 4, // Force IPv4
