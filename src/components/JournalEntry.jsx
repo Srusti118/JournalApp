@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './JournalEntry.module.css'
 
-function JournalEntry({ _id, title, createdAt, body, onEdit, onDelete }) {
+function JournalEntry({ _id, title, createdAt, body, isPendingSync, onEdit, onDelete }) {
   const [likes, setLikes] = useState(0)
 
   const handleLike = () => {
@@ -22,7 +22,7 @@ function JournalEntry({ _id, title, createdAt, body, onEdit, onDelete }) {
   const readTime = Math.max(1, Math.ceil(wordCount / 180))
 
   return (
-    <article className={styles.card}>
+    <article className={`${styles.card} ${isPendingSync ? styles.cardPending : ''}`}>
       <div className={styles.cardHeader}>
         <div className={styles.metaInfo}>
           <time className={styles.date} dateTime={createdAt}>
@@ -32,6 +32,17 @@ function JournalEntry({ _id, title, createdAt, body, onEdit, onDelete }) {
           <span className={styles.readTime}>{readTime} min read</span>
           <span className={styles.dotSeparator} aria-hidden="true" />
           <span className={styles.readTime}>{wordCount} words</span>
+          {isPendingSync && (
+            <>
+              <span className={styles.dotSeparator} aria-hidden="true" />
+              <span
+                className={styles.pendingBadge}
+                title="Stored safely in offline browser storage. Will synchronize when online."
+              >
+                ⏳ Offline / Pending Sync
+              </span>
+            </>
+          )}
         </div>
       </div>
 

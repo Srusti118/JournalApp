@@ -130,10 +130,10 @@ Practice:
 
 ## 18.10 Offline Writes & Background Sync (Optional)
 
-* [ ] Learn IndexedDB basics (local browser database)
-* [ ] Store offline journal entries in IndexedDB
-* [ ] Learn Service Worker Background Sync API
-* [ ] Synchronize pending offline entries to Node.js backend when online
+* [x] Learn IndexedDB basics (local browser database)
+* [x] Store offline journal entries in IndexedDB
+* [x] Learn Service Worker Background Sync API
+* [x] Synchronize pending offline entries to Node.js backend when online
 
 
 ---
@@ -177,5 +177,6 @@ Convert your Journal App into:
 * [x] Standalone app experience
 * [x] Offline loading of frontend assets
 * [x] Offline fallback page
-* [ ] Offline creation/editing of journal entries (via IndexedDB & Sync)
+* [x] Offline creation/editing of journal entries (via IndexedDB & Sync)
 * [x] Lighthouse PWA score above 90
+

@@ -157,3 +157,24 @@
   background: var(--accent-warm-light);
   border-color: var(--accent-warm-light);
 }
+
+.cardPending {
+  border-style: dashed;
+  border-color: var(--accent-warm);
+  background: var(--bg-surface-elevated);
+}
+
+.pendingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--accent-warm-light);
+  color: var(--accent-warm);
+  border: 1px solid var(--accent-warm);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+

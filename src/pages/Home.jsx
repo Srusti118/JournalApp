@@ -104,7 +104,7 @@ const Home = ({ entries = [], addEntry, updateEntry, deleteEntry, loading: notes
         ) : (
           entries.map((entry) => (
             <JournalEntry
-              key={entry._id}
+              key={entry._id || entry.tempId}
               {...entry}
               onEdit={handleStartEdit}
               onDelete={deleteEntry}

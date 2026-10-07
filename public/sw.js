@@ -159,4 +159,18 @@ self.addEventListener('push', (event) => {
   )
 })
 
+// 6. Background Sync: Handle offline queues when connectivity is restored
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-pending-notes') {
+    event.waitUntil(
+      self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({ type: 'SYNC_PENDING_NOTES' })
+        })
+      })
+    )
+  }
+})
+
+
 

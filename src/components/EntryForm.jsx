@@ -33,16 +33,20 @@ function EntryForm({ onAddEntry, editingEntry, onUpdateEntry, onCancelEdit }) {
   }, [editingEntry, setValue, setFocus, reset])
 
   const onSubmit = async (data) => {
-    if (editingEntry) {
-      await onUpdateEntry(editingEntry._id, {
-        title: data.title.trim(),
-        body: data.body.trim(),
-      })
-    } else {
-      await onAddEntry({
-        title: data.title.trim(),
-        body: data.body.trim(),
-      })
+    try {
+      if (editingEntry) {
+        await onUpdateEntry(editingEntry._id, {
+          title: data.title.trim(),
+          body: data.body.trim(),
+        })
+      } else {
+        await onAddEntry({
+          title: data.title.trim(),
+          body: data.body.trim(),
+        })
+        reset({ title: '', body: '' })
+      }
+    } catch {
       reset({ title: '', body: '' })
     }
   }

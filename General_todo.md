@@ -171,4 +171,6 @@ Use this file to track progress topic by topic.
 - [ ☑️ ] Runtime Caching Strategies (Cache-First for assets, Network-First for API)
 - [ ☑️ ] App Installation Experience (`beforeinstallprompt` listener, custom install button)
 - [ ☑️ ] Lighthouse PWA Audit & Verification (Score > 90, desktop & mobile installability)
+- [ ☑️ ] Web Push Notifications & Cron Reminders (VAPID, Web Push API, Background Service Worker push listener)
+- [ ☑️ ] Offline Writes & Background Sync (IndexedDB storage, offline journal creation, automatic online sync)
 - [ ] Refer to the detailed checklist in [PWA_todo.md](./PWA_todo.md) for full breakdown.
