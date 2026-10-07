@@ -25,25 +25,55 @@ export const useNotes = () => {
 
       setSyncing(true)
 
-      for (const note of pending) {
+      for (const task of pending) {
         try {
-          const res = await authFetch.post('/notes', {
-            title: note.title,
-            body: note.body,
-          })
+          if (task.action === 'update') {
+            // Update existing note on server
+            const res = await authFetch.put(`/notes/${task.targetId}`, {
+              title: task.title,
+              body: task.body,
+            })
 
-          if (res.ok) {
-            const data = await res.json()
-            const payload = data.data || data
-            const syncedNote = payload.note || payload
+            if (res.ok) {
+              const data = await res.json()
+              const payload = data.data || data
+              const syncedNote = payload.note || payload
+              await deletePendingNote(task.tempId)
 
-            await deletePendingNote(note.tempId)
-
-            setEntries((prev) =>
-              prev.map((item) =>
-                (item.tempId === note.tempId || item._id === note.tempId) ? syncedNote : item
+              setEntries((prev) =>
+                prev.map((item) =>
+                  item._id === task.targetId
+                    ? { ...syncedNote, isPendingSync: false }
+                    : item
+                )
               )
-            )
+            }
+          } else if (task.action === 'delete') {
+            // Delete existing note on server
+            const res = await authFetch.delete(`/notes/${task.targetId}`)
+            if (res.ok) {
+              await deletePendingNote(task.tempId)
+            }
+          } else {
+            // Default: Create new note
+            const res = await authFetch.post('/notes', {
+              title: task.title,
+              body: task.body,
+            })
+
+            if (res.ok) {
+              const data = await res.json()
+              const payload = data.data || data
+              const syncedNote = payload.note || payload
+
+              await deletePendingNote(task.tempId)
+
+              setEntries((prev) =>
+                prev.map((item) =>
+                  (item.tempId === task.tempId || item._id === task.tempId) ? syncedNote : item
+                )
+              )
+            }
           }
         } catch {}
       }
@@ -168,38 +198,111 @@ export const useNotes = () => {
     [authFetch]
   )
 
-  // Delete note
+  // Delete note (supports offline deletes)
   const deleteNote = useCallback(
     async (id) => {
       setError(null)
 
-      // If note was offline-created and hasn't synced yet
+      // Optimistically remove from UI immediately
+      setEntries((prev) => prev.filter((entry) => entry._id !== id && entry.tempId !== id))
+
+      // If note was offline-created and hasn't synced yet, delete directly from pending queue
       if (typeof id === 'string' && id.startsWith('offline-')) {
         await deletePendingNote(id)
-        setEntries((prev) => prev.filter((entry) => entry._id !== id && entry.tempId !== id))
         return
       }
 
+      // If offline: queue delete task for background sync
+      if (typeof navigator !== 'undefined' && !navigator.onLine) {
+        try {
+          await savePendingNote({
+            tempId: `delete-${id}`,
+            targetId: id,
+            action: 'delete',
+          })
+        } catch {}
+        return
+      }
+
+      // Online path: Call network DELETE
       try {
         const res = await authFetch.delete(`/notes/${id}`)
         if (!res.ok) {
           const data = await res.json()
           throw new Error(data.message || 'Failed to delete note')
         }
-        setEntries((prev) => prev.filter((entry) => entry._id !== id))
       } catch (err) {
-        setError(err.message)
-        throw err
+        // Fallback: Queue delete task if request fails
+        try {
+          await savePendingNote({
+            tempId: `delete-${id}`,
+            targetId: id,
+            action: 'delete',
+          })
+        } catch {}
       }
     },
     [authFetch]
   )
 
-  // Update note
+  // Update note (supports offline edits)
   const updateNote = useCallback(
     async (id, updatedFields) => {
       setError(null)
 
+      const isOffline = typeof navigator !== 'undefined' && !navigator.onLine
+
+      // Case A: Editing a note that was created offline and has not synced yet
+      if (typeof id === 'string' && id.startsWith('offline-')) {
+        setEntries((prev) =>
+          prev.map((entry) =>
+            (entry._id === id || entry.tempId === id)
+              ? { ...entry, ...updatedFields, isPendingSync: true }
+              : entry
+          )
+        )
+
+        try {
+          const pending = await getPendingNotes()
+          const existing = pending.find((p) => p.tempId === id || p._id === id)
+          if (existing) {
+            await savePendingNote({ ...existing, ...updatedFields })
+          }
+        } catch {}
+
+        return { _id: id, ...updatedFields, isPendingSync: true }
+      }
+
+      // Case B: Offline edit of an existing server note
+      if (isOffline) {
+        const optimisticNote = {
+          _id: id,
+          ...updatedFields,
+          isPendingSync: true,
+        }
+
+        // Optimistically update UI immediately
+        setEntries((prev) =>
+          prev.map((entry) => (entry._id === id ? { ...entry, ...updatedFields, isPendingSync: true } : entry))
+        )
+
+        // Queue update task in IndexedDB / localStorage
+        try {
+          const updateTask = {
+            tempId: `update-${id}`,
+            targetId: id,
+            action: 'update',
+            title: updatedFields.title,
+            body: updatedFields.body,
+            createdAt: new Date().toISOString(),
+          }
+          await savePendingNote(updateTask)
+        } catch {}
+
+        return optimisticNote
+      }
+
+      // Online path: Attempt network PUT
       try {
         const res = await authFetch.put(`/notes/${id}`, updatedFields)
         if (!res.ok) {
@@ -214,8 +317,30 @@ export const useNotes = () => {
         )
         return updatedDbNote
       } catch (err) {
-        setError(err.message)
-        throw err
+        // Fallback if network drops mid-request
+        const optimisticNote = {
+          _id: id,
+          ...updatedFields,
+          isPendingSync: true,
+        }
+
+        setEntries((prev) =>
+          prev.map((entry) => (entry._id === id ? { ...entry, ...updatedFields, isPendingSync: true } : entry))
+        )
+
+        try {
+          const updateTask = {
+            tempId: `update-${id}`,
+            targetId: id,
+            action: 'update',
+            title: updatedFields.title,
+            body: updatedFields.body,
+            createdAt: new Date().toISOString(),
+          }
+          await savePendingNote(updateTask)
+        } catch {}
+
+        return optimisticNote
       }
     },
     [authFetch]
