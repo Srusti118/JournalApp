@@ -11,7 +11,13 @@ export const auth = betterAuth({
   database: mongodbAdapter(db),
   secret: process.env.BETTER_AUTH_SECRET || config.jwtSecret,
   baseURL: process.env.BETTER_AUTH_URL || `http://localhost:${config.port}`,
-  trustedOrigins: Array.from(new Set([...config.corsOrigins, config.clientUrl, process.env.CLIENT_URL].filter(Boolean))),
+  trustedOrigins: Array.from(
+    new Set(
+      [...config.corsOrigins, config.clientUrl, process.env.CLIENT_URL]
+        .filter(Boolean)
+        .map((origin) => origin.replace(/\/+$/, ''))
+    )
+  ),
   emailAndPassword: {
     enabled: true,
   },
@@ -38,10 +44,12 @@ export const auth = betterAuth({
     bearer(),
   ],
   advanced: {
+    trustedProxyHeaders: true,
     defaultCookieAttributes: {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
+      partitioned: process.env.NODE_ENV === 'production',
     },
   },
 })
