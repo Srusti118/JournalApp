@@ -23,7 +23,7 @@ app.use(
 )
 
 // Better Auth handler - mounted BEFORE express.json() to avoid consuming stream
-app.all('/api/auth/*splat', toNodeHandler(auth))
+app.all('/api/auth/*', toNodeHandler(auth))
 
 app.use(express.json())
 app.use(cookieParser())
