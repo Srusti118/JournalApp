@@ -32,7 +32,9 @@ const config = {
     new Set([
       ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
       process.env.CLIENT_URL,
+      process.env.FRONTEND_URL,
       'http://localhost:5173',
+      'http://localhost:4173',
       'http://localhost:5174',
       'http://localhost:3000',
       `http://localhost:${parseInt(process.env.PORT, 10) || 5000}`,
@@ -40,7 +42,7 @@ const config = {
   ),
 
   // Client URL (Frontend)
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  clientUrl: process.env.CLIENT_URL || process.env.FRONTEND_URL || 'http://localhost:5173',
 
   // Google OAuth
   google: {

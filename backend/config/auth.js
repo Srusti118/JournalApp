@@ -13,7 +13,14 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || `http://localhost:${config.port}`,
   trustedOrigins: Array.from(
     new Set(
-      [...config.corsOrigins, config.clientUrl, process.env.CLIENT_URL]
+      [
+        ...config.corsOrigins,
+        config.clientUrl,
+        process.env.CLIENT_URL,
+        process.env.FRONTEND_URL,
+        'http://localhost:5173',
+        'http://localhost:4173',
+      ]
         .filter(Boolean)
         .map((origin) => origin.replace(/\/+$/, ''))
     )
@@ -22,6 +29,7 @@ export const auth = betterAuth({
     enabled: true,
   },
   account: {
+    storeStateStrategy: 'database',
     accountLinking: {
       enabled: true,
       trustedProviders: ['google'],
@@ -45,12 +53,18 @@ export const auth = betterAuth({
   ],
   advanced: {
     trustedProxyHeaders: true,
-    defaultCookieAttributes: {
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      partitioned: process.env.NODE_ENV === 'production',
-    },
+    useSecureCookies: process.env.NODE_ENV === 'production',
+    defaultCookieAttributes: process.env.NODE_ENV === 'production'
+      ? {
+          sameSite: 'none',
+          secure: true,
+          httpOnly: true,
+        }
+      : {
+          sameSite: 'lax',
+          secure: false,
+          httpOnly: true,
+        },
   },
 })
 

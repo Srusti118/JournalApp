@@ -1,10 +1,17 @@
-import { createContext, useContext, useCallback, useMemo } from 'react'
+import { createContext, useContext, useCallback, useMemo, useState, useEffect } from 'react'
 import { authClient } from '../services/authClient.js'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const { data: session, isPending, error } = authClient.useSession()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!isPending) {
+      setLoading(false)
+    }
+  }, [isPending])
 
   // Format user object for consistent consumption across the app
   const user = useMemo(() => {
@@ -62,7 +69,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user,
-        loading: isPending,
+        loading: loading || isPending,
         error,
         login,
         register,
