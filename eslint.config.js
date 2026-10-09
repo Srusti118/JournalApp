@@ -19,3 +19,6 @@ export default defineConfig([
     },
   },
 ])
+
+// ESLint configuration defining code quality rules, JavaScript standards, and React Hooks validation.
+// help us validate the files if needed based on teh above
